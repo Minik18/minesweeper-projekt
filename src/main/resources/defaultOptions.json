@@ -1,0 +1,22 @@
+{
+  "options": {
+      "windowOptions": {
+        "title" : "Minesweeper Game",
+        "size" : {
+          "width" : 300,
+          "height" : 600,
+          "resizeable" : false
+        }
+      },
+    "buttonOptions": {
+      "size": {
+        "width" : 30,
+        "height" : 30
+      }
+    },
+    "gameOptions": {
+      "nickName" : "default",
+      "difficulty" : 40
+    }
+  }
+}
