@@ -1,13 +1,16 @@
 package Control;
 
 import Button.AbstractButton;
+import Button.InGame.EmptyButton;
 import Button.InGame.NumberButton;
 import Button.State;
 import Exception.UnknownButtonException;
 import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import Option.GeneralOptions;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 
 import java.awt.Point;
@@ -24,11 +27,10 @@ public class ButtonGenerator {
     private AbstractButton[][] buttonMatrix;
     private List<AbstractButton> buttons;
     private static ButtonGenerator instance = new ButtonGenerator();
-    private ButtonOptions buttonOptions = (ButtonOptions) SingletonHolder.getInstance().getGeneralOptions().getOptions().get("ButtonOptions");
-    private GameOptions gameOptions = (GameOptions) SingletonHolder.getInstance().getGeneralOptions().getOptions().get("GameOptions");
+    private ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
+    private GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
 
     private ButtonGenerator() {
-        buttons = new ArrayList<>();
         buttonFactory = new ButtonFactory();
         size = buttonOptions.getSize();
         numberOfBombs = gameOptions.getDifficulty();
@@ -40,9 +42,9 @@ public class ButtonGenerator {
 
     public GridPane generateButtons(Dimension frameSize, GridPane pane) throws UnknownButtonException {
         List<Point> bombList = generateBombs(frameSize);
-        buttonMatrix = new AbstractButton[frameSize.width / size.width][frameSize.height / size.height];
+        buttonMatrix = new AbstractButton[frameSize.width / size.width + 1 ][frameSize.height / size.height + 1 ];
         Point temp;
-        AbstractButton button;
+        AbstractButton button = new EmptyButton();
 
         for(int i = 0;i < frameSize.width;i += size.width)
         {
@@ -58,11 +60,18 @@ public class ButtonGenerator {
                 }
                 button.setSize(size);
                 AbstractButton finalButton = button;
-                button.setOnAction(actionEvent -> {
-                    finalButton.onClickEvent();
+                button.setOnMouseClicked(action ->
+                {
+                    if(action.getButton().equals(MouseButton.SECONDARY))
+                    {
+                        finalButton.onLeftClickEvent();
+                    }else if(action.getButton().equals(MouseButton.PRIMARY))
+                    {
+                        finalButton.onRightClickEvent();
+                    }
                 });
-                buttons.add(button);
                 pane.add(button,i,j);
+                buttonMatrix[GridPane.getColumnIndex(button) / size.width][GridPane.getRowIndex(button) / size.height] = button;
             }
         }
         return pane;
@@ -123,23 +132,7 @@ public class ButtonGenerator {
     }
 
     public AbstractButton[][] getButtonMatrix() {
-        if (buttonMatrix[0][0] == null) {
-            createButtonMatrix();
-        }
         return buttonMatrix;
-    }
-
-    private void createButtonMatrix()
-    {
-        int counter = 0;
-        for(int i=0;i< buttonMatrix.length;i++)
-        {
-            for(int j = 0;j<buttonMatrix[i].length;j++)
-            {
-                buttonMatrix[i][j] = buttons.get(counter);
-                counter++;
-            }
-        }
     }
 
 }

@@ -13,7 +13,7 @@ public class NumberButton extends AbstractButton {
     private String pathToNumbers = "file:src/main/resources/Images/";
 
     @Override
-    public void onClickEvent() {
+    public void onRightClickEvent() {
         if(!isDisable()) {
             Image image;
             pathToNumbers = pathToNumbers + score.toString() + ".png";

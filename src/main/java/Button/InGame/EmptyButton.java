@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 public class EmptyButton extends AbstractButton {
     @Override
-    public void onClickEvent() {
+    public void onRightClickEvent() {
         if(!isDisable())
         {
             AbstractButton[][] buttonMatrix = ButtonGenerator.getInstance().getButtonMatrix();
             setDisable(true);
 
-            Integer[] objIndex = new Integer[2];
+            Integer[] objIndex = new Integer[]{0,0};
 
-            for(int i = 0; i < buttonMatrix.length ;i++)
+            for(int i = 0; i < buttonMatrix.length -1;i++)
             {
-                for(int j = 0; j < buttonMatrix[i].length; j++)
+                for(int j = 0; j < buttonMatrix[i].length-1; j++)
                 {
                     if(buttonMatrix[i][j].equals(this))
                     {
@@ -33,16 +33,18 @@ public class EmptyButton extends AbstractButton {
             for (int i = -1; i < 2; i++) {
                 for (int j = -1; j < 2; j++) {
                     try {
-                        if (buttonMatrix[objIndex[0] + i][objIndex[1] + j].getClass().equals(this.getClass())
-                                || buttonMatrix[objIndex[0] + i][objIndex[1] + j].getClass().equals(NumberButton.class)) {
-                            unlockList.add(buttonMatrix[objIndex[0] + i][objIndex[1] + j]);
+                        if(buttonMatrix[i + objIndex[0]][j + objIndex[1]].getClass().equals(this.getClass())
+                                || buttonMatrix[i + objIndex[0]][j + objIndex[1]].getClass().equals(NumberButton.class))
+                        {
+                            unlockList.add(buttonMatrix[i + objIndex[0]][j + objIndex[1]]);
                         }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        //TODO: Print error message
-                    }r
+                    } catch (Exception ignored) {
+                        //Ignored exception because at the side buttons ArrayIndexOutOfBoundsException will be thrown
+                        //every time because of the check of the surrounding buttons
+                    }
                 }
             }
-            unlockList.forEach(AbstractButton::onClickEvent);
+            unlockList.forEach(AbstractButton::onRightClickEvent);
         }
     }
 }

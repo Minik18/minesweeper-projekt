@@ -46,9 +46,11 @@ public class ImportOptions {
         map.put("ButtonOptions",bo);
 
         WindowOptions wo = new WindowOptions();
-        wo.setSize(new Dimension(windowOptions.getJSONObject("size").getInt("width"),
-                windowOptions.getJSONObject("size").getInt("height")));
-        wo.setResizeable(windowOptions.getJSONObject("size").getBoolean("resizeable"));
+        wo.setGamePanelSize(new Dimension(windowOptions.getJSONObject("gamePanelSize").getInt("width"),
+                windowOptions.getJSONObject("gamePanelSize").getInt("height")));
+        wo.setInfoPanelSize(new Dimension(windowOptions.getJSONObject("infoPanelSize").getInt("width"),
+                windowOptions.getJSONObject("infoPanelSize").getInt("height")));
+        wo.setResizeable(windowOptions.getBoolean("resizeable"));
         wo.setTitle(windowOptions.getString("title"));
 
         map.put("WindowOptions",wo);

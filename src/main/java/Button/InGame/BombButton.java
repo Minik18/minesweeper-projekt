@@ -10,9 +10,9 @@ public class BombButton extends AbstractButton {
     private Image image;
 
     @Override
-    public void onClickEvent() {
+    public void onRightClickEvent() {
         if(!isDisable()) {
-            image = new Image(path, 30, 30, true, true);
+            image = new Image(path);
             ImageView imageView = new ImageView(image);
             setGraphic(imageView);
             setDisable(true);

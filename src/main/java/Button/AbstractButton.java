@@ -1,19 +1,35 @@
 package Button;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
 
-import java.awt.*;
+import java.awt.Dimension;
 
 public abstract class AbstractButton extends Button {
-    public abstract void onClickEvent();
+    private final String pathToFlag = "file:src/main/resources/Images/flag.png";
+    private Boolean hasFlag = false;
+
+    public abstract void onRightClickEvent();
     public void setSize(Dimension size)
     {
         this.setPrefSize(size.getWidth(),size.getHeight());
         this.setMaxSize(size.getWidth(),size.getHeight());
         this.setMinSize(size.getWidth(),size.getHeight());
 
+    }
+    public void onLeftClickEvent()
+    {
+        if(!hasFlag)
+        {
+            Image image = new Image(pathToFlag);
+            ImageView imageView = new ImageView(image);
+            this.setGraphic(imageView);
+            hasFlag = true;
+        }else
+        {
+            this.setGraphic(null);
+            hasFlag = false;
+        }
     }
 }

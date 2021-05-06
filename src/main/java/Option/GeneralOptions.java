@@ -1,13 +1,12 @@
 package Option;
 
-import Control.SingletonHolder;
 import Option.DataOption.Option;
 
 import java.util.Map;
 
 public class GeneralOptions {
 
-    private Map<String,Option> options = SingletonHolder.getInstance().getImportOptions().importOptions();
+    private Map<String,Option> options = ImportOptions.getInstance().importOptions();
     private static GeneralOptions instance = new GeneralOptions();
 
     private GeneralOptions(){}
