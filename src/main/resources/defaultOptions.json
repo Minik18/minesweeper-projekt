@@ -3,8 +3,8 @@
       "windowOptions": {
         "title" : "Minesweeper Game",
         "size" : {
-          "width" : 300,
-          "height" : 600,
+          "width" : 315,
+          "height" : 608,
           "resizeable" : false
         }
       },

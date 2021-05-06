@@ -27,17 +27,8 @@ public class WindowConfigure {
     public Stage configureGameWindow(Stage stage,int width, int height) throws UnknownButtonException {
         GridPane pane = new GridPane();
 
-        List<AbstractButton> buttons = buttonGenerator.generateButtons(new Dimension(width,height));
-        int index = 0;
+        pane = buttonGenerator.generateButtons(new Dimension(width,height),pane);
 
-        for(int i =0;i< width/30;i++)
-        {
-            for(int j = 0;j<height/30;j++)
-            {
-                pane.add(buttons.get(index),i,j);
-                index++;
-            }
-        }
 
         scene = new Scene(pane);
         stage.setScene(scene);

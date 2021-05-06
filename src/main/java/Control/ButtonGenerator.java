@@ -6,10 +6,14 @@ import Button.State;
 import Exception.UnknownButtonException;
 import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.layout.GridPane;
 
-import java.awt.*;
-import java.util.List;
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
+import java.awt.Dimension;
 import java.util.Random;
 
 public class ButtonGenerator {
@@ -17,8 +21,8 @@ public class ButtonGenerator {
     private ButtonFactory buttonFactory;
     private Integer numberOfBombs;
 
-    private ArrayList<AbstractButton> buttons;
     private AbstractButton[][] buttonMatrix;
+    private List<AbstractButton> buttons;
     private static ButtonGenerator instance = new ButtonGenerator();
     private ButtonOptions buttonOptions = (ButtonOptions) SingletonHolder.getInstance().getGeneralOptions().getOptions().get("ButtonOptions");
     private GameOptions gameOptions = (GameOptions) SingletonHolder.getInstance().getGeneralOptions().getOptions().get("GameOptions");
@@ -34,68 +38,39 @@ public class ButtonGenerator {
         return instance;
     }
 
-    public List<AbstractButton> generateButtons(Dimension frameSize) throws UnknownButtonException {
-        buttonMatrix = new AbstractButton[frameSize.height / size.height][frameSize.width / size.width];
-        ArrayList<Point> bombsList;
+    public GridPane generateButtons(Dimension frameSize, GridPane pane) throws UnknownButtonException {
+        List<Point> bombList = generateBombs(frameSize);
+        buttonMatrix = new AbstractButton[frameSize.width / size.width][frameSize.height / size.height];
+        Point temp;
         AbstractButton button;
-        bombsList = generateBombs(frameSize);
 
-
-        for (int i = 0; i < frameSize.height; i += size.height) {
-            for (int j = 0; j < frameSize.width; j += size.width) {
-                Point temp = new Point(i, j);
-                if (bombsList.stream().anyMatch(p -> p.equals(temp))) {
+        for(int i = 0;i < frameSize.width;i += size.width)
+        {
+            for(int j = 0;j < frameSize.height;j += size.height)
+            {
+                temp = new Point(i,j);
+                if(bombList.contains(temp))
+                {
                     button = buttonFactory.getButton(State.BOMB);
-                } else {
-                    button = checkIfNumber(bombsList, temp);
+                }else
+                {
+                    button = getButton(temp,bombList);
                 }
                 button.setSize(size);
-
+                AbstractButton finalButton = button;
+                button.setOnAction(actionEvent -> {
+                    finalButton.onClickEvent();
+                });
                 buttons.add(button);
+                pane.add(button,i,j);
             }
         }
-        return buttons;
+        return pane;
     }
-    private ArrayList<Point> generateBombs(Dimension frameSize)
-    {
-        ArrayList<Point> list = new ArrayList<>();
+
+    private AbstractButton getButton(Point point, List<Point> bombList) throws UnknownButtonException {
+        Integer counter = 0;
         Point temp;
-        for(int i = 0;i<numberOfBombs;i++)
-        {
-            temp = new Point(getRandomNumberInRange(frameSize.height),getRandomNumberInRange(frameSize.width));
-            if(list.isEmpty())
-            {
-                list.add(temp);
-            }else
-            {
-                Point finalTemp = temp;
-                if(list.stream().anyMatch(a -> a.equals(finalTemp)))
-                {
-                    i--;
-                }else{
-                    list.add(finalTemp);
-                }
-            }
-        }
-
-        return list;
-    }
-
-    private int getRandomNumberInRange(int range)
-    {
-        int number;
-        Random rand = new Random();
-        do {
-            number = rand.nextInt(range);
-        }while(number % size.height != 0);
-
-        return number;
-    }
-
-    private AbstractButton checkIfNumber(ArrayList<Point> bombList, Point point) throws UnknownButtonException {
-        Point temp;
-        int counter = 0;
-
         for(int i=-1;i<2;i++)
         {
             for(int j = -1; j<2;j++)
@@ -109,15 +84,42 @@ public class ButtonGenerator {
                 }
             }
         }
-        if(counter!=0)
+        if(counter == 0)
+        {
+            return buttonFactory.getButton(State.EMPTY);
+        }else
         {
             NumberButton button = (NumberButton) buttonFactory.getButton(State.NUMBER);
             button.changeScore(counter);
             return button;
-        }else
-        {
-            return buttonFactory.getButton(State.EMPTY);
         }
+    }
+
+    private List<Point> generateBombs(Dimension range)
+    {
+        List<Point> result = new ArrayList<>();
+        Integer counter = 0;
+        Point temp;
+        do{
+            temp = new Point(getRandomNumberInRange(range.width),getRandomNumberInRange(range.height));
+            Point finalTemp = temp;
+            if(result.isEmpty() || !result.stream().anyMatch(a -> a.equals(finalTemp)));
+            {
+                result.add(temp);
+                counter++;
+            }
+        }while(counter < numberOfBombs);
+        return result;
+    }
+    private Integer getRandomNumberInRange(Integer range)
+    {
+        Integer number;
+        Random rand = new Random();
+        do {
+            number = rand.nextInt(range);
+        }while(number % size.height != 0);
+
+        return number;
     }
 
     public AbstractButton[][] getButtonMatrix() {
@@ -139,4 +141,7 @@ public class ButtonGenerator {
             }
         }
     }
+
 }
+
+
