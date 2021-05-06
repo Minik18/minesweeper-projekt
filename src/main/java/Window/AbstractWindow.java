@@ -13,7 +13,7 @@ public abstract class AbstractWindow extends Application {
     protected Stage stage;
     protected final WindowConfigure windowConfigure = WindowConfigure.getInstance();
 
-    protected void close()
+    public void close()
     {
         stage.close();
     }

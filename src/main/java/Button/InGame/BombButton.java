@@ -1,8 +1,10 @@
 package Button.InGame;
 
 import Button.AbstractButton;
+import Window.GameWindow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public class BombButton extends AbstractButton {
 
@@ -17,6 +19,8 @@ public class BombButton extends AbstractButton {
             setGraphic(imageView);
             setDisable(true);
             setOpacity(1);
+            Stage stage = (Stage)getScene().getWindow();
+            stage.close();
         }
     }
 }
