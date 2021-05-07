@@ -1,7 +1,6 @@
 package Button.InGame;
 
 import Button.AbstractButton;
-import Window.GameWindow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;

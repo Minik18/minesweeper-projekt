@@ -8,9 +8,9 @@
         },
         "infoPanelSize" : {
           "width" : 150,
-          "height" : 600
+          "height" : 580
         },
-        "resizeable" : true
+        "resizeable" : false
       },
     "buttonOptions": {
       "size": {

@@ -12,9 +12,8 @@ public class GameWindow extends AbstractWindow {
     public void start(Stage stage) throws Exception {
         this.stage = stage;
         stageConfigure();
-        this.stage = windowConfigure.configureGamePanel(stage);
+        this.stage.setScene(windowConfigure.configureGamePanel(stage));
         open();
-
     }
 
     @Override
