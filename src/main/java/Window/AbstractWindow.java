@@ -1,5 +1,6 @@
 package Window;
 
+import Control.Controller;
 import Option.DataOption.WindowOptions;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -12,15 +13,7 @@ public abstract class AbstractWindow extends Application {
     protected WindowOptions windowOptions;
     protected Stage stage;
     protected final WindowConfigure windowConfigure = WindowConfigure.getInstance();
-
-    public void close()
-    {
-        stage.close();
-    }
-    protected void open()
-    {
-        stage.show();
-    }
+    protected final Controller controller = Controller.getInstance();
 
     protected abstract void stageConfigure();
 }

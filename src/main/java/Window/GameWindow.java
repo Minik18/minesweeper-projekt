@@ -13,7 +13,8 @@ public class GameWindow extends AbstractWindow {
         this.stage = stage;
         stageConfigure();
         this.stage.setScene(windowConfigure.configureGameWindow(stage));
-        open();
+        controller.setStage(stage);
+        controller.start();
     }
 
     @Override
