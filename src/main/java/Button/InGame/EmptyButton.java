@@ -1,7 +1,7 @@
 package Button.InGame;
 
 import Button.AbstractButton;
-import Control.ButtonGenerator;
+import Button.ButtonGenerator;
 
 import java.util.ArrayList;
 

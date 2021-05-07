@@ -1,4 +1,4 @@
-package Control;
+package Button;
 
 import Button.AbstractButton;
 import Button.InGame.BombButton;

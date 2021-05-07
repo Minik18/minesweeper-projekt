@@ -2,7 +2,7 @@ package Window;
 
 import Exception.UnknownButtonException;
 
-import Control.ButtonGenerator;
+import Button.ButtonGenerator;
 import Option.DataOption.GameOptions;
 import Option.DataOption.WindowOptions;
 import Option.GeneralOptions;
@@ -30,7 +30,7 @@ public class WindowConfigure {
         return instance;
     }
 
-    public Scene configureGamePanel(Stage stage) throws UnknownButtonException {
+    public Scene configureGameWindow(Stage stage) throws UnknownButtonException {
         Dimension size;
         size = windowOptions.getGamePanelSize();
         GridPane pane = new GridPane();
@@ -45,32 +45,37 @@ public class WindowConfigure {
     {
         VBox vBox = new VBox();
         Label emptyLabel = new Label();
+        Color green = Color.color(0.3,1,0.2);
+        Color red = Color.color(1,0.2,0.2);
+        Color yellow = Color.color(0.5,0,1);
+
         GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
         //Info label
-        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,20),"Info Panel"));
+        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,20),"Info Panel",yellow));
         //Empty label
         vBox.getChildren().add(emptyLabel);
         //Player label
-        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,20),"Player:"));
+        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,20),"Player:",green));
         //Nickname label
-        vBox.getChildren().add(setLabel(Font.font("Arial",20),gameOptions.getNickName()));
+        vBox.getChildren().add(setLabel(Font.font("Arial",20),gameOptions.getNickName(),red));
         //Empty label
         emptyLabel = new Label();
         vBox.getChildren().add(emptyLabel);
         //Number of Bombs label
-        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,15),"Number of Bombs:"));
+        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,15),"Number of Bombs:",green));
         //Actual number of bombs label
-        vBox.getChildren().add(setLabel(Font.font("Arial",20),gameOptions.getDifficulty().toString()));
+        vBox.getChildren().add(setLabel(Font.font("Arial",20),gameOptions.getDifficulty().toString(),red));
         vBox.setAlignment(Pos.TOP_CENTER);
         vBox.setBackground(new Background(new BackgroundFill(Color.WHITE,CornerRadii.EMPTY, Insets.EMPTY)));
         box.getChildren().add(vBox);
         return box;
     }
-    private Label setLabel(Font font, String text)
+    private Label setLabel(Font font, String text, Color color)
     {
         Label label = new Label();
         label.setFont(font);
         label.setText(text);
+        label.setTextFill(color);
         return label;
     }
 }

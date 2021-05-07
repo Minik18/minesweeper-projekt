@@ -1,15 +1,11 @@
-package Control;
+package Button;
 
-import Button.AbstractButton;
 import Button.InGame.EmptyButton;
 import Button.InGame.NumberButton;
-import Button.State;
 import Exception.UnknownButtonException;
 import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
 import Option.GeneralOptions;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 
