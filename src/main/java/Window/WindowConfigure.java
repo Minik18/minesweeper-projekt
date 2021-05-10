@@ -4,10 +4,12 @@ import Control.Controller;
 import Exception.UnknownButtonException;
 
 import Button.ButtonGenerator;
+import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
 import Option.DataOption.WindowOptions;
 import Option.GeneralOptions;
 import javafx.scene.layout.*;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.awt.*;
 
@@ -17,6 +19,7 @@ public class WindowConfigure {
     private  ButtonGenerator buttonGenerator;
     private WindowOptions windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");
     private GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
+    private ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
 
     private WindowConfigure() {
     }
@@ -51,6 +54,8 @@ public class WindowConfigure {
             controller.stop.setDisable(false);
             controller.highscore.setDisable(true);
             controller.changeNickname.setDisable(true);
+            controller.nickInput.setDisable(true);
+            controller.numberInput.setDisable(true);
             controller.changeDifficulty.setDisable(true);
             try {
                 controller.addButtonsToGamePane();
@@ -69,21 +74,54 @@ public class WindowConfigure {
             controller.changeNickname.setDisable(false);
             controller.changeDifficulty.setDisable(false);
             controller.gamePane.setDisable(true);
+            controller.nickInput.setDisable(false);
+            controller.numberInput.setDisable(false);
             controller.gamePane.getChildren().clear();
             controller.endTimer();
             controller.stop.setDisable(true);
         });
         controller.changeNickname.setOnMouseClicked(action ->
         {
-            //TODO: Make new window where user can insert a new nickname and store it!
+            if(controller.nickInput.getText().isEmpty())
+            {
+                controller.nickInput.setText("Write something here first!");
+            }else if(controller.nickInput.getText().equals("Write something here first!"))
+            {
+                controller.nickInput.setText("Write something here first!");
+            }else
+            {
+                controller.nickName.setText(controller.nickInput.getText());
+                controller.updateNickname(controller.nickInput.getText());
+                controller.nickInput.clear();
+            }
         });
         controller.changeDifficulty.setOnMouseClicked(action ->
         {
-            //TODO: Make new window where user can insert a number of bombs and store it!
+            Integer maxBombs = (windowOptions.getGamePanelSize().height * windowOptions.getGamePanelSize().width) /
+                    (buttonOptions.getSize().height * buttonOptions.getSize().width);
+            if(controller.numberInput.getText().isEmpty())
+            {
+                controller.numberInput.setText("Write something here first!");
+            }else if(NumberUtils.isParsable(controller.numberInput.getText())){
+                if(Integer.parseInt(controller.numberInput.getText()) <= 0 ||
+                    Integer.parseInt(controller.numberInput.getText()) > maxBombs)
+                {
+                    controller.numberInput.setText("Write a number between 0 and "+ maxBombs +" !");
+                }else
+                {
+                    controller.bombNumber.setText(controller.numberInput.getText());
+                    controller.updateDifficulty(Integer.parseInt(controller.numberInput.getText()));
+                    gameOptions.setDifficulty(Integer.parseInt(controller.numberInput.getText()));
+                    controller.numberInput.clear();
+                }
+            }else
+            {
+                controller.numberInput.setText("Write a number between 0 and 100!");
+            }
         });
         controller.highscore.setOnMouseClicked(action ->
         {
-            //TODO: Make new window where user can see all of the high scores and possibly order them!
+            controller.setHighscoreScene();
         });
 
     }

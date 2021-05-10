@@ -7,14 +7,13 @@ import Option.DataOption.WindowOptions;
 import org.json.JSONObject;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class ImportOptions {
 
-    private final String PATH_TO_FILE = "src/main/resources/defaultOptions.json";
+    private final String PATH_TO_DEFAULT_FILE = "src/main/resources/defaultOptions.json";
+    private final String PATH_TO_FILE = "src/main/resources/options.json";
     private static ImportOptions instance = new ImportOptions();
 
     private ImportOptions() {}
@@ -64,10 +63,16 @@ public class ImportOptions {
         return map;
     }
 
-    private String getStringFromFile() throws FileNotFoundException {
+    private String getStringFromFile() throws IOException {
         try
         {
-            Scanner scanner = new Scanner(new File(PATH_TO_FILE));
+            File file = new File(PATH_TO_FILE);
+            Scanner scanner;
+            if (!file.exists()) {
+                copyFile(PATH_TO_DEFAULT_FILE, PATH_TO_FILE);
+            }
+            scanner = new Scanner(file);
+
             String result = "";
 
             while(scanner.hasNextLine())
@@ -81,5 +86,13 @@ public class ImportOptions {
         {
             throw e;
         }
+    }
+
+    private void copyFile(String fromStr, String toStr) throws IOException {
+        FileInputStream from = new FileInputStream(fromStr);
+        FileOutputStream to = new FileOutputStream(toStr);
+        to.write(from.readAllBytes());
+        from.close();
+        to.close();
     }
 }
