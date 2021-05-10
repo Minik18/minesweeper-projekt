@@ -2,6 +2,7 @@ package Button;
 
 import Button.InGame.EmptyButton;
 import Button.InGame.NumberButton;
+import Control.RevealButton;
 import Exception.UnknownButtonException;
 import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
@@ -33,11 +34,11 @@ public class ButtonGenerator {
 
     public GridPane generateButtons(Dimension frameSize, GridPane pane) throws UnknownButtonException {
         List<Point> bombList = generateBombs(frameSize);
+        RevealButton.setBombNumber(bombList.size());
         buttonMatrix = new AbstractButton[frameSize.width / size.width + 1 ][frameSize.height / size.height + 1 ];
         Point temp;
         new EmptyButton();
         AbstractButton button;
-
         for(int i = 0;i < frameSize.width;i += size.width)
         {
             for(int j = 0;j < frameSize.height;j += size.height)
@@ -67,6 +68,7 @@ public class ButtonGenerator {
                 buttonMatrix[GridPane.getColumnIndex(button) / size.width][GridPane.getRowIndex(button) / size.height] = button;
             }
         }
+        RevealButton.setButtonNumber(pane.getChildren().size());
         return pane;
     }
 
@@ -127,6 +129,7 @@ public class ButtonGenerator {
     public static AbstractButton[][] getButtonMatrix() {
         return buttonMatrix;
     }
+
 
 }
 

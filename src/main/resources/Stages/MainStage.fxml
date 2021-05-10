@@ -8,14 +8,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.0" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" prefHeight="580.0" prefWidth="450.0" snapToPixel="false" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.Controller">
+<SplitPane dividerPositions="0.0" focusTraversable="false" pickOnBounds="false" snapToPixel="false" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.Controller">
   <items>
-    <AnchorPane fx:id="gamePane" centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="300.0" SplitPane.resizableWithParent="false" />
+    <AnchorPane fx:id="gamePane" cacheShape="false" centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="278.0" scaleShape="false" SplitPane.resizableWithParent="false" />
     <AnchorPane minHeight="600.0" minWidth="150.0" prefHeight="600.0" prefWidth="140.0">
          <children>
-            <SplitPane dividerPositions="0.0" orientation="VERTICAL" prefHeight="580.0" prefWidth="160.0" AnchorPane.leftAnchor="0.0">
+            <SplitPane dividerPositions="50.0" orientation="VERTICAL" prefHeight="580.0" prefWidth="160.0" AnchorPane.leftAnchor="0.0">
               <items>
-                <AnchorPane fx:id="menuPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="180.0">
+                <AnchorPane fx:id="menuPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="150.0" scaleShape="false" snapToPixel="false" SplitPane.resizableWithParent="false">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="23.0" prefHeight="27.0" prefWidth="67.0" text="Menu">
                            <font>

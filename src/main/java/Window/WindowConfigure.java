@@ -29,7 +29,8 @@ public class WindowConfigure {
     }
 
     public void configureGameWindow(Controller controller) {
-        Dimension size;
+        Dimension size = windowOptions.getGamePanelSize();
+        controller.gamePane.setPrefSize(size.width - buttonOptions.getSize().width,size.height - buttonOptions.getSize().height);
         controller.gamePane.setDisable(true);
         controller.stop.setDisable(true);
 
