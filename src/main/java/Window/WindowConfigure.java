@@ -1,81 +1,100 @@
 package Window;
 
+import Control.Controller;
 import Exception.UnknownButtonException;
 
 import Button.ButtonGenerator;
 import Option.DataOption.GameOptions;
 import Option.DataOption.WindowOptions;
 import Option.GeneralOptions;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 import java.awt.*;
 
 public class WindowConfigure {
 
-    private static WindowConfigure  instance= new WindowConfigure();
-    private final ButtonGenerator buttonGenerator = ButtonGenerator.getInstance();
+    private static WindowConfigure instance = new WindowConfigure();
+    private  ButtonGenerator buttonGenerator;
     private WindowOptions windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");
-    private WindowConfigure(){};
+    private GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
 
-    public static  WindowConfigure getInstance()
-    {
+    private WindowConfigure() {
+    }
+
+    public static WindowConfigure getInstance() {
         return instance;
     }
 
-    public Scene configureGameWindow(Stage stage) throws UnknownButtonException {
+    public void configureGameWindow(Controller controller) {
+        Dimension size;
+        controller.gamePane.setDisable(true);
+        controller.stop.setDisable(true);
+
+        size = windowOptions.getInfoPanelSize();
+        controller.menuPane.setPrefSize(size.width,size.height/2);
+        controller.infoPane.setPrefSize(size.width,size.height/2);
+
+        controller.bombNumber.setText(gameOptions.getDifficulty().toString());
+        controller.nickName.setText(gameOptions.getNickName());
+
+        configureMenuPanel(controller);
+
+    }
+
+    private void configureMenuPanel(Controller controller)
+    {
+        controller.start.setOnMouseClicked((action) ->
+        {
+            controller.gamePane.setDisable(false);
+            controller.startTimer();
+            controller.start.setDisable(true);
+            controller.stop.setDisable(false);
+            controller.highscore.setDisable(true);
+            controller.changeNickname.setDisable(true);
+            controller.changeDifficulty.setDisable(true);
+            try {
+                controller.addButtonsToGamePane();
+            } catch (UnknownButtonException e) {
+               //TODO: Print error message
+            }
+        });
+        controller.exit.setOnMouseClicked(action ->
+        {
+            controller.close();
+        });
+        controller.stop.setOnMouseClicked(action ->
+        {
+            controller.start.setDisable(false);
+            controller.highscore.setDisable(false);
+            controller.changeNickname.setDisable(false);
+            controller.changeDifficulty.setDisable(false);
+            controller.gamePane.setDisable(true);
+            controller.gamePane.getChildren().clear();
+            controller.endTimer();
+            controller.stop.setDisable(true);
+        });
+        controller.changeNickname.setOnMouseClicked(action ->
+        {
+            //TODO: Make new window where user can insert a new nickname and store it!
+        });
+        controller.changeDifficulty.setOnMouseClicked(action ->
+        {
+            //TODO: Make new window where user can insert a number of bombs and store it!
+        });
+        controller.highscore.setOnMouseClicked(action ->
+        {
+            //TODO: Make new window where user can see all of the high scores and possibly order them!
+        });
+
+    }
+    public void addButtonsToGamePane(Controller controller) throws UnknownButtonException {
+        controller.gamePane.getChildren().clear();
         Dimension size;
         size = windowOptions.getGamePanelSize();
         GridPane pane = new GridPane();
-        pane.setPrefSize(size.width,size.height);
-
-        pane = buttonGenerator.generateButtons(size,pane);
-
-        return new Scene(configureInfoPanel(new HBox(pane)));
-    }
-
-    private HBox configureInfoPanel(HBox box)
-    {
-        VBox vBox = new VBox();
-        Label emptyLabel = new Label();
-        Color green = Color.color(0.3,1,0.2);
-        Color red = Color.color(1,0.2,0.2);
-        Color yellow = Color.color(0.5,0,1);
-
-        GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
-        //Info label
-        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,20),"Info Panel",yellow));
-        //Empty label
-        vBox.getChildren().add(emptyLabel);
-        //Player label
-        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,20),"Player:",green));
-        //Nickname label
-        vBox.getChildren().add(setLabel(Font.font("Arial",20),gameOptions.getNickName(),red));
-        //Empty label
-        emptyLabel = new Label();
-        vBox.getChildren().add(emptyLabel);
-        //Number of Bombs label
-        vBox.getChildren().add(setLabel(Font.font("Arial",FontWeight.BOLD,15),"Number of Bombs:",green));
-        //Actual number of bombs label
-        vBox.getChildren().add(setLabel(Font.font("Arial",20),gameOptions.getDifficulty().toString(),red));
-        vBox.setAlignment(Pos.TOP_CENTER);
-        vBox.setBackground(new Background(new BackgroundFill(Color.WHITE,CornerRadii.EMPTY, Insets.EMPTY)));
-        box.getChildren().add(vBox);
-        return box;
-    }
-    private Label setLabel(Font font, String text, Color color)
-    {
-        Label label = new Label();
-        label.setFont(font);
-        label.setText(text);
-        label.setTextFill(color);
-        return label;
+        pane.setPrefSize(size.width, size.height);
+        buttonGenerator = new ButtonGenerator();
+        pane = buttonGenerator.generateButtons(size, pane);
+        controller.gamePane.getChildren().add(pane);
     }
 }

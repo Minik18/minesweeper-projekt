@@ -19,7 +19,6 @@ public class BombButton extends AbstractButton {
             setGraphic(imageView);
             setDisable(true);
             setOpacity(1);
-            Controller.getInstance().close();
         }
     }
 }

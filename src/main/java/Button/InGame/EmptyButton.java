@@ -10,7 +10,7 @@ public class EmptyButton extends AbstractButton {
     public void onRightClickEvent() {
         if(!isDisable())
         {
-            AbstractButton[][] buttonMatrix = ButtonGenerator.getInstance().getButtonMatrix();
+            AbstractButton[][] buttonMatrix = ButtonGenerator.getButtonMatrix();
             setDisable(true);
 
             Integer[] objIndex = new Integer[]{0,0};

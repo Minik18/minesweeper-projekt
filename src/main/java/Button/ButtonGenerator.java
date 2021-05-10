@@ -20,27 +20,23 @@ public class ButtonGenerator {
     private ButtonFactory buttonFactory;
     private Integer numberOfBombs;
 
-    private AbstractButton[][] buttonMatrix;
-    private List<AbstractButton> buttons;
-    private static ButtonGenerator instance = new ButtonGenerator();
+    private static AbstractButton[][] buttonMatrix;
     private ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
     private GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
 
-    private ButtonGenerator() {
+    public ButtonGenerator() {
         buttonFactory = new ButtonFactory();
         size = buttonOptions.getSize();
         numberOfBombs = gameOptions.getDifficulty();
     }
 
-    public static ButtonGenerator getInstance() {
-        return instance;
-    }
 
     public GridPane generateButtons(Dimension frameSize, GridPane pane) throws UnknownButtonException {
         List<Point> bombList = generateBombs(frameSize);
         buttonMatrix = new AbstractButton[frameSize.width / size.width + 1 ][frameSize.height / size.height + 1 ];
         Point temp;
-        AbstractButton button = new EmptyButton();
+        new EmptyButton();
+        AbstractButton button;
 
         for(int i = 0;i < frameSize.width;i += size.width)
         {
@@ -66,6 +62,7 @@ public class ButtonGenerator {
                         finalButton.onRightClickEvent();
                     }
                 });
+                button.setFocusTraversable(false);
                 pane.add(button,i,j);
                 buttonMatrix[GridPane.getColumnIndex(button) / size.width][GridPane.getRowIndex(button) / size.height] = button;
             }
@@ -127,7 +124,7 @@ public class ButtonGenerator {
         return number;
     }
 
-    public AbstractButton[][] getButtonMatrix() {
+    public static AbstractButton[][] getButtonMatrix() {
         return buttonMatrix;
     }
 

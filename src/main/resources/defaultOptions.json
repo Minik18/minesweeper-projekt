@@ -3,12 +3,12 @@
       "windowOptions": {
         "title" : "Minesweeper Game",
         "gamePanelSize" : {
-          "width" : 300,
-          "height" : 525
+          "width" : 330,
+          "height" : 510
         },
         "infoPanelSize" : {
           "width" : 150,
-          "height" : 580
+          "height" : 600
         },
         "resizeable" : false
       },
