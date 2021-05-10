@@ -1,6 +1,7 @@
 package Control;
 
 import Option.UpdateFile;
+import Window.HighscoreWindow;
 import Window.WindowConfigure;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ public class Controller {
 
     private Timer timer = Timer.getInstance();
     private UpdateFile updateFile = UpdateFile.getInstance();
+    private HighscoreWindow highscoreWindow = HighscoreWindow.getInstance();
     private Stage stage;
     @FXML
     public AnchorPane gamePane;
@@ -80,6 +82,8 @@ public class Controller {
     }
     public void setHighscoreScene()
     {
-
+        highscoreWindow.setScene(stage,stage.getScene());
+        highscoreWindow.setup();
+        stage.setScene(highscoreWindow.getScene());
     }
 }
