@@ -32,6 +32,7 @@ public abstract class AbstractButton extends Button {
         {
             this.setGraphic(null);
             hasFlag = false;
+            RevealButton.decrementFlagNumber();
         }
     }
 }

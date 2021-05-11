@@ -32,8 +32,8 @@ public class GameWindow extends AbstractWindow {
         windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");
 
         stage.setHeight(windowOptions.getInfoPanelSize().height + windowOptions.getConsolePanelSize().height
-                + windowOptions.getMenuPanelSize().height);
-        stage.setWidth(windowOptions.getInfoPanelSize().width + windowOptions.getGamePanelSize().width);
+                + windowOptions.getMenuPanelSize().height );
+        stage.setWidth(windowOptions.getInfoPanelSize().width + windowOptions.getGamePanelSize().width ) ;
         stage.setResizable(windowOptions.isResizeable());
         stage.setTitle(windowOptions.getTitle());
         try

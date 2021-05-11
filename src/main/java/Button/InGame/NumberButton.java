@@ -1,6 +1,7 @@
 package Button.InGame;
 
 import Button.AbstractButton;
+import Control.RevealButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -22,6 +23,7 @@ public class NumberButton extends AbstractButton {
             setGraphic(imageView);
             setDisable(true);
             setOpacity(1);
+            RevealButton.incrementRevealedNumber();
         }
     }
 

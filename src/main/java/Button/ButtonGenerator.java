@@ -35,10 +35,12 @@ public class ButtonGenerator {
     public GridPane generateButtons(Dimension frameSize, GridPane pane) throws UnknownButtonException {
         List<Point> bombList = generateBombs(frameSize);
         RevealButton.setBombNumber(bombList.size());
-        buttonMatrix = new AbstractButton[frameSize.width / size.width + 1 ][frameSize.height / size.height + 1 ];
+        buttonMatrix = new AbstractButton[frameSize.width / size.width + 1 ][frameSize.height / size.height + 1];
         Point temp;
         new EmptyButton();
         AbstractButton button;
+        Integer bombNumber = 0;
+        Integer buttonNumber = 0;
         for(int i = 0;i < frameSize.width;i += size.width)
         {
             for(int j = 0;j < frameSize.height;j += size.height)
@@ -47,6 +49,7 @@ public class ButtonGenerator {
                 if(bombList.contains(temp))
                 {
                     button = buttonFactory.getButton(State.BOMB);
+                    bombNumber ++;
                 }else
                 {
                     button = getButton(temp,bombList);
@@ -64,11 +67,13 @@ public class ButtonGenerator {
                     }
                 });
                 button.setFocusTraversable(false);
+                buttonNumber++;
                 pane.add(button,i,j);
                 buttonMatrix[GridPane.getColumnIndex(button) / size.width][GridPane.getRowIndex(button) / size.height] = button;
             }
         }
-        RevealButton.setButtonNumber(pane.getChildren().size());
+        RevealButton.setBombNumber(bombNumber);
+        RevealButton.setButtonNumber(buttonNumber);
         return pane;
     }
 

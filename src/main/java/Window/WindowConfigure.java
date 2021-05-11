@@ -30,13 +30,18 @@ public class WindowConfigure {
 
     public void configureGameWindow(Controller controller) {
         Dimension size = windowOptions.getGamePanelSize();
-        controller.gamePane.setPrefSize(size.width - buttonOptions.getSize().width,size.height - buttonOptions.getSize().height);
+        controller.gamePane.setPrefSize(size.width ,size.height );
         controller.gamePane.setDisable(true);
         controller.stop.setDisable(true);
 
         size = windowOptions.getInfoPanelSize();
-        controller.menuPane.setPrefSize(size.width,size.height/2);
-        controller.infoPane.setPrefSize(size.width,size.height/2);
+        controller.infoPane.setPrefSize(size.width,size.height);
+
+        size = windowOptions.getMenuPanelSize();
+        controller.menuPane.setPrefSize(size.width,size.height);
+
+        size = windowOptions.getConsolePanelSize();
+        controller.consolePane.setPrefSize(size.width,size.height);
 
         controller.bombNumber.setText(gameOptions.getDifficulty().toString());
         controller.nickName.setText(gameOptions.getNickName());
@@ -71,17 +76,8 @@ public class WindowConfigure {
         });
         controller.stop.setOnMouseClicked(action ->
         {
-            controller.start.setDisable(false);
-            controller.highscore.setDisable(false);
-            controller.changeNickname.setDisable(false);
-            controller.changeDifficulty.setDisable(false);
-            controller.gamePane.setDisable(true);
-            controller.nickInput.setDisable(false);
-            controller.numberInput.setDisable(false);
+            controller.restartState();
             controller.console.setText("Lets have a little break now!");
-            controller.gamePane.getChildren().clear();
-            controller.endTimer();
-            controller.stop.setDisable(true);
         });
         controller.changeNickname.setOnMouseClicked(action ->
         {

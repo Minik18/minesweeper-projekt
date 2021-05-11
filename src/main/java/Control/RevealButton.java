@@ -1,8 +1,8 @@
 package Control;
 
-
 public class RevealButton {
 
+    private static Controller controller;
     private static Integer revealedButtonNumber = 0;
     private static Integer bombNumber = 0;
     private static Integer buttonNumber = 0;
@@ -17,6 +17,10 @@ public class RevealButton {
     {
         flagNumber++;
         checkIfWin();
+    }
+    public static void decrementFlagNumber()
+    {
+        flagNumber--;
     }
     public static void setBombNumber(Integer num)
     {
@@ -35,12 +39,26 @@ public class RevealButton {
         flagNumber = 0;
     }
 
+    public static void setController(Controller l)
+    {
+        controller = l;
+    }
+
     private static void checkIfWin()
     {
         if(revealedButtonNumber + bombNumber == buttonNumber && flagNumber == bombNumber)
         {
-            //TODO: Handle win
+            restartFlagNumber();
+            restartReveledCounter();
+            controller.console.setText("Congratulation! You made it!");
         }
+    }
+    public static void lose()
+    {
+        restartFlagNumber();
+        restartReveledCounter();
+        controller.console.setText("Do not worry! Better luck next time!");
+        controller.restartState();
     }
 
 }

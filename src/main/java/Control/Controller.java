@@ -18,6 +18,7 @@ public class Controller {
     private Timer timer = Timer.getInstance();
     private UpdateFile updateFile = UpdateFile.getInstance();
     private HighscoreWindow highscoreWindow = HighscoreWindow.getInstance();
+
     private Stage stage;
     @FXML
     public Pane gamePane;
@@ -50,13 +51,27 @@ public class Controller {
     @FXML
     public Label console;
 
-    public void setStage(Stage stage)
-    {
+    public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void restartState()
+    {
+        start.setDisable(false);
+        highscore.setDisable(false);
+        changeNickname.setDisable(false);
+        changeDifficulty.setDisable(false);
+        gamePane.setDisable(true);
+        nickInput.setDisable(false);
+        numberInput.setDisable(false);
+        gamePane.getChildren().clear();
+        endTimer();
+        stop.setDisable(true);
     }
 
     public void start()
     {
+        RevealButton.setController(this);
         stage.show();
     }
     public void close()
