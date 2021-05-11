@@ -4,6 +4,7 @@ import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
 import Option.DataOption.Option;
 import Option.DataOption.WindowOptions;
+import javafx.scene.image.Image;
 import org.json.JSONObject;
 
 import java.awt.*;
@@ -49,8 +50,19 @@ public class ImportOptions {
                 windowOptions.getJSONObject("gamePanelSize").getInt("height")));
         wo.setInfoPanelSize(new Dimension(windowOptions.getJSONObject("infoPanelSize").getInt("width"),
                 windowOptions.getJSONObject("infoPanelSize").getInt("height")));
+        wo.setMenuPanelSize(new Dimension(windowOptions.getJSONObject("menuPanelSize").getInt("width"),
+                windowOptions.getJSONObject("menuPanelSize").getInt("height")));
+        wo.setConsolePanelSize(new Dimension(windowOptions.getJSONObject("consolePanelSize").getInt("width"),
+                windowOptions.getJSONObject("consolePanelSize").getInt("height")));
         wo.setResizeable(windowOptions.getBoolean("resizeable"));
         wo.setTitle(windowOptions.getString("title"));
+        try {
+            wo.setImage(new Image(windowOptions.getString("iconLocation")));
+        }catch (Exception e)
+        {
+            System.out.println("Error in import : "+ e.toString());
+            //TODO: Handle error
+        }
 
         map.put("WindowOptions",wo);
 

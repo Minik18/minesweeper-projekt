@@ -7,10 +7,19 @@
           "height" : 510
         },
         "infoPanelSize" : {
-          "width" : 150,
-          "height" : 600
+          "width" : 250,
+          "height" : 180
         },
-        "resizeable" : false
+        "menuPanelSize" : {
+          "width" : 250,
+          "height" : 330
+        },
+        "consolePanelSize" : {
+          "width" : 250,
+          "height" : 90
+        },
+        "resizeable" : false,
+        "iconLocation" : "file:src/main/resources/Images/icon.png"
       },
     "buttonOptions": {
       "size": {

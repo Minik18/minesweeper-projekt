@@ -1,5 +1,6 @@
 package Button;
 
+import Control.RevealButton;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,6 +27,7 @@ public abstract class AbstractButton extends Button {
             ImageView imageView = new ImageView(image);
             this.setGraphic(imageView);
             hasFlag = true;
+            RevealButton.incrementFlagNumber();
         }else
         {
             this.setGraphic(null);

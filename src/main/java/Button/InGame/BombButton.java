@@ -19,6 +19,7 @@ public class BombButton extends AbstractButton {
             setGraphic(imageView);
             setDisable(true);
             setOpacity(1);
+            //TODO: Handle game Over
         }
     }
 }

@@ -58,6 +58,7 @@ public class WindowConfigure {
             controller.nickInput.setDisable(true);
             controller.numberInput.setDisable(true);
             controller.changeDifficulty.setDisable(true);
+            controller.console.setText("Lets get started!...");
             try {
                 controller.addButtonsToGamePane();
             } catch (UnknownButtonException e) {
@@ -77,6 +78,7 @@ public class WindowConfigure {
             controller.gamePane.setDisable(true);
             controller.nickInput.setDisable(false);
             controller.numberInput.setDisable(false);
+            controller.console.setText("Lets have a little break now!");
             controller.gamePane.getChildren().clear();
             controller.endTimer();
             controller.stop.setDisable(true);
@@ -93,26 +95,42 @@ public class WindowConfigure {
             {
                 controller.nickName.setText(controller.nickInput.getText());
                 controller.updateNickname(controller.nickInput.getText());
+                controller.console.setText("Hello there " + controller.nickInput.getText() + " !");
                 controller.nickInput.clear();
             }
         });
         controller.changeDifficulty.setOnMouseClicked(action ->
         {
-            Integer maxBombs = (windowOptions.getGamePanelSize().height * windowOptions.getGamePanelSize().width) /
-                    (buttonOptions.getSize().height * buttonOptions.getSize().width);
             if(controller.numberInput.getText().isEmpty())
             {
                 controller.numberInput.setText("Write something here first!");
             }else if(NumberUtils.isParsable(controller.numberInput.getText())){
-                if(Integer.parseInt(controller.numberInput.getText()) <= 0 ||
-                    Integer.parseInt(controller.numberInput.getText()) > maxBombs)
+                Integer inputNumber = Integer.parseInt(controller.numberInput.getText());
+                Integer maxBombs = (windowOptions.getGamePanelSize().height * windowOptions.getGamePanelSize().width) /
+                        (buttonOptions.getSize().height * buttonOptions.getSize().width);
+                if(inputNumber <= 0 || inputNumber > maxBombs)
                 {
                     controller.numberInput.setText("Write a number between 0 and "+ maxBombs +" !");
                 }else
                 {
-                    controller.bombNumber.setText(controller.numberInput.getText());
-                    controller.updateDifficulty(Integer.parseInt(controller.numberInput.getText()));
-                    gameOptions.setDifficulty(Integer.parseInt(controller.numberInput.getText()));
+                    controller.bombNumber.setText(inputNumber.toString());
+                    controller.updateDifficulty(inputNumber);
+                    gameOptions.setDifficulty(inputNumber);
+                    if(inputNumber < 20)
+                    {
+                        controller.console.setText("Too easy..");
+                    }else if(inputNumber < 50)
+                    {
+                        controller.console.setText("This is not even challenging!");
+                    }else if(inputNumber < 80)
+                    {
+                        controller.console.setText("Okay, that looks normal!");
+                    }else if(inputNumber < 120)
+                    {
+                        controller.console.setText("Finally a worthy opponent!");
+                    }else{
+                        controller.console.setText("Good luck with that!");
+                    }
                     controller.numberInput.clear();
                 }
             }else

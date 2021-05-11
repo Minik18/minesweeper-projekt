@@ -2,6 +2,7 @@ package Button.InGame;
 
 import Button.AbstractButton;
 import Button.ButtonGenerator;
+import Control.RevealButton;
 
 import java.util.ArrayList;
 
@@ -10,6 +11,8 @@ public class EmptyButton extends AbstractButton {
     public void onRightClickEvent() {
         if(!isDisable())
         {
+            RevealButton.incrementRevealedNumber();
+            this.setGraphic(null);
             AbstractButton[][] buttonMatrix = ButtonGenerator.getButtonMatrix();
             setDisable(true);
 

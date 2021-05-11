@@ -7,10 +7,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import Button.ButtonGenerator;
-
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -49,6 +45,10 @@ public class Controller {
     public TextField nickInput;
     @FXML
     public TextField numberInput;
+    @FXML
+    public Pane consolePane;
+    @FXML
+    public Label console;
 
     public void setStage(Stage stage)
     {
