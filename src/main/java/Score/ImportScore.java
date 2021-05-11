@@ -26,7 +26,7 @@ public class ImportScore {
     {
         list.clear();
         jsonObject = new JSONObject(getString());
-        if(jsonObject.isEmpty())
+        if(jsonObject.getJSONArray("scores").length() == 0)
         {
             return new ArrayList<>();
         }else
@@ -38,7 +38,7 @@ public class ImportScore {
                 score.setName(obj.getString("name"));
                 score.setTime(obj.getLong("time"));
                 score.setScore(obj.getDouble("score"));
-                score.setBombNumber(obj.getInt("numberOfBombs"));
+                score.setBombNumber(obj.getInt("bombNumber"));
                 list.add(score);
             }
         }
@@ -54,7 +54,14 @@ public class ImportScore {
     {
         File file;
         Scanner scanner;
-        String result = "{}";
+        String result = """
+                {
+                "scores" :
+                    [
+                        
+                    ]
+                }
+                """;
         try
         {
             file = new File(PATH_TO_FILE);

@@ -21,4 +21,14 @@ public class Score implements Comparable<Score>{
             return score.compareTo(o.getScore());
         }
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "score"  + ':' + score +
+                ",bombNumber" + ':' + bombNumber +
+                ",name" + ':' + '\"' + name  + '\"' +
+                ",time" + ':' + time +
+                '}';
+    }
 }

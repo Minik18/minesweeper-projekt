@@ -51,6 +51,7 @@ public class RevealButton {
             restartFlagNumber();
             restartReveledCounter();
             controller.console.setText("Congratulation! You made it!");
+            controller.winState(bombNumber);
         }
     }
     public static void lose()

@@ -103,4 +103,11 @@ public class Controller {
         highscoreWindow.setup();
         stage.setScene(highscoreWindow.getScene());
     }
+    public void winState(Integer bombNumber)
+    {
+        endTimer();
+        Long time = timer.getDeltaTime() / 1000;
+        updateFile.updateHighScore(nickName.getText(),time,bombNumber, (double) (bombNumber / time));
+        restartState();
+    }
 }
