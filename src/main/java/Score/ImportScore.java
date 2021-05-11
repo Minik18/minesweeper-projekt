@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -53,14 +54,16 @@ public class ImportScore {
     {
         File file;
         Scanner scanner;
-        String result = "";
+        String result = "{}";
         try
         {
             file = new File(PATH_TO_FILE);
             if(!file.exists())
             {
                 file.createNewFile();
-                result = "{}";
+                FileOutputStream fo = new FileOutputStream(file);
+                fo.write(result.getBytes());
+                fo.close();
             }else {
                 scanner = new Scanner(file);
                 result = "";

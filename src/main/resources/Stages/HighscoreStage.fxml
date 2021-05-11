@@ -6,11 +6,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.HighscoreController">
+<SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.HighscoreController">
   <items>
-    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="400.0">
+    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="500.0">
          <children>
-            <TableView fx:id="tableView" focusTraversable="false" layoutX="4.0" layoutY="3.0" prefHeight="539.0" prefWidth="400.0">
+            <TableView fx:id="tableView" focusTraversable="false" layoutX="4.0" layoutY="3.0" prefHeight="539.0" prefWidth="520.0">
               <columns>
                 <TableColumn editable="false" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="Place" />
                 <TableColumn editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Name" />
@@ -22,9 +22,9 @@
                </columnResizePolicy>
             </TableView>
          </children></AnchorPane>
-    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="50.0">
+    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="100.0">
          <children>
-            <Button fx:id="back" focusTraversable="false" layoutX="5.0" layoutY="14.0" mnemonicParsing="false" text="Back" />
+            <Button fx:id="back" focusTraversable="false" layoutX="30.0" layoutY="37.0" mnemonicParsing="false" text="Back" />
          </children></AnchorPane>
   </items>
 </SplitPane>

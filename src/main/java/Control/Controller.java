@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import Button.ButtonGenerator;
 
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import Exception.UnknownButtonException;
@@ -22,15 +24,15 @@ public class Controller {
     private HighscoreWindow highscoreWindow = HighscoreWindow.getInstance();
     private Stage stage;
     @FXML
-    public AnchorPane gamePane;
+    public Pane gamePane;
     @FXML
     public Label nickName;
     @FXML
     public Label bombNumber;
     @FXML
-    public AnchorPane menuPane;
+    public Pane menuPane;
     @FXML
-    public AnchorPane infoPane;
+    public Pane infoPane;
     @FXML
     public Button start;
     @FXML
