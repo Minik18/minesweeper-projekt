@@ -19,7 +19,7 @@
           "height" : 90
         },
         "resizeable" : false,
-        "iconLocation" : "file:src/main/resources/Images/icon.png"
+        "iconLocation" : "Images/icon.png"
       },
     "buttonOptions": {
       "size": {

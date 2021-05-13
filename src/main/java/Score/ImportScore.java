@@ -3,9 +3,10 @@ package Score;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class ImportScore {
@@ -13,7 +14,7 @@ public class ImportScore {
     private static ImportScore instance = new ImportScore();
     private JSONObject jsonObject;
     private List<Score> list = new ArrayList<>();
-    private static final String PATH_TO_FILE = "src/main/resources/highscore.json";
+    private static final String highscoreFileName = "highscore.json";
 
     private ImportScore(){}
 
@@ -51,9 +52,7 @@ public class ImportScore {
         return list;
     }
     private String getString()
-    {
-        File file;
-        Scanner scanner;
+     {
         String result = """
                 {
                 "scores" :
@@ -62,27 +61,93 @@ public class ImportScore {
                     ]
                 }
                 """;
-        try
-        {
-            file = new File(PATH_TO_FILE);
-            if(!file.exists())
-            {
-                file.createNewFile();
-                FileOutputStream fo = new FileOutputStream(file);
-                fo.write(result.getBytes());
-                fo.close();
-            }else {
-                scanner = new Scanner(file);
-                result = "";
-                while (scanner.hasNextLine()) {
-                    result += scanner.nextLine();
-                }
-                scanner.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        String filePath = null;
+        try {
+            filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(highscoreFileName)),"UTF-8");
+        } catch (UnsupportedEncodingException ignored) {
+            //Ignored exception because encoding will always be UTF-8 which is a valid encoding
         }
+         if(filePath == "null")  //Run by IDE and the file does not exist
+         {
+             System.out.println("--LOG-- Run by IDE!");
+             System.out.println("--LOG-- The " + highscoreFileName + " does not exist!");
+             String appLocation = null;
+             try {
+                 appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+             } catch (UnsupportedEncodingException e) {
+                 e.printStackTrace();
+             }
+             appLocation = appLocation.replace("file:/","");
+             filePath = appLocation + highscoreFileName;
+             createFile(filePath,result);
+         }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
+         {
+             System.out.println("--LOG-- Run by JAR!");
+             filePath = filePath.replace("jar:","").replace("file:/","");
+             filePath = filePath.substring(0,filePath.lastIndexOf("/"));
+             filePath = filePath.substring(0,filePath.lastIndexOf("/"));
+             filePath += "/";
+             filePath += highscoreFileName;
+             System.out.println(filePath);
+             File file = new File(filePath);
+             if(!file.exists()) //Run by jar and the file does not exist
+             {
+                 System.out.println("--LOG-- The " + highscoreFileName + " does not exist!");
+                 String appLocation = null;
+                 try {
+                     appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+                 } catch (UnsupportedEncodingException e) {
+                     e.printStackTrace();
+                 }
+                 appLocation = appLocation.replace("file:/","").replace("jar:/","");
+                 appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
+                 appLocation += "/";
+                 filePath = appLocation + highscoreFileName;
+                 createFile(filePath,result);
+             }else { //Run by jar and the file exist
+                 System.out.println("--LOG-- The " + highscoreFileName + " does exist!");
+                 System.out.println(filePath);
+             }
+         }else { //Run by IDE and the file does exist
+             System.out.println("--LOG-- Run by IDE!");
+             System.out.println("--LOG-- The " + highscoreFileName + " does exist!");
+             filePath = filePath.replace("file:/", "");
+         }
+         try
+         {
+             InputStream in = Files.newInputStream(Path.of(filePath));
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+             result = "";
+             String line;
+             while((line = reader.readLine()) != null)
+             {
+                 result += line;
+             }
+             reader.close();
+             return result;
+
+         }catch(Exception e)
+         {
+             //TODO:Handle error
+             e.printStackTrace();
+         }
         return result;
     }
 
+    private void createFile(String path, String str)
+    {
+        try {
+            FileOutputStream fo = new FileOutputStream(path);
+            fo.write(str.getBytes());
+            fo.flush();
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+

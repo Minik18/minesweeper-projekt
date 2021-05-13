@@ -107,7 +107,7 @@ public class Controller {
     {
         endTimer();
         Long time = timer.getDeltaTime() / 1000;
-        updateFile.updateHighScore(nickName.getText(),time,bombNumber, (double) (bombNumber / time));
+        updateFile.updateHighScore(nickName.getText(),time,bombNumber, (double) (bombNumber * bombNumber / time));
         restartState();
     }
 }

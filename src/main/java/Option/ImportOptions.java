@@ -9,12 +9,15 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.*;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class ImportOptions {
 
-    private final String PATH_TO_DEFAULT_FILE = "src/main/resources/defaultOptions.json";
-    private final String PATH_TO_FILE = "src/main/resources/options.json";
+    private final String defaultOptionsFileName = "defaultOptions.json";
+    private final String optionsFileName = "options.json";
     private static ImportOptions instance = new ImportOptions();
 
     private ImportOptions() {}
@@ -28,8 +31,9 @@ public class ImportOptions {
         String json = "";
         try {
              json = getStringFromFile();
-        }catch(IOException e)
+        }catch(Exception e)
         {
+            e.printStackTrace();
             //TODO:Print error message
         }
         JSONObject jsonObject = new JSONObject(json);
@@ -57,10 +61,11 @@ public class ImportOptions {
         wo.setResizeable(windowOptions.getBoolean("resizeable"));
         wo.setTitle(windowOptions.getString("title"));
         try {
-            wo.setImage(new Image(windowOptions.getString("iconLocation")));
+            String filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(windowOptions.getString("iconLocation"))),"UTF-8");
+            wo.setImage(new Image(filePath));
         }catch (Exception e)
         {
-            System.out.println("Error in import : "+ e.toString());
+            e.printStackTrace();
             //TODO: Handle error
         }
 
@@ -75,36 +80,78 @@ public class ImportOptions {
         return map;
     }
 
-    private String getStringFromFile() throws IOException {
+    private String getStringFromFile() throws Exception  {
+
+        String filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(optionsFileName)),"UTF-8");
+
+        if(filePath == "null")  //Run by IDE and the file does not exist
+        {
+            System.out.println("--LOG-- Run by IDE!");
+            System.out.println("--LOG-- The " + optionsFileName + " does not exist!");
+             String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+             appLocation = appLocation.replace("file:/","");
+             copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
+             filePath = appLocation + optionsFileName;
+        }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
+            {
+                System.out.println("--LOG-- Run by JAR!");
+                filePath = filePath.replace("jar:","").replace("file:/","");
+                filePath = filePath.substring(0,filePath.lastIndexOf("/"));
+                filePath = filePath.substring(0,filePath.lastIndexOf("/"));
+                filePath += "/";
+                filePath += optionsFileName;
+                System.out.println(filePath);
+                File file = new File(filePath);
+                if(!file.exists()) //Run by jar and the file does not exist
+                {
+                    System.out.println("--LOG-- The " + optionsFileName + " does not exist!");
+                    String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+                    appLocation = appLocation.replace("file:/","").replace("jar:/","");
+                    appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
+                    appLocation += "/";
+                    copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
+                    filePath = appLocation + optionsFileName;
+                }else { //Run by jar and the file exist
+                    System.out.println("--LOG-- The " + optionsFileName + " does exist!");
+                    System.out.println(filePath);
+                }
+            }else { //Run by IDE and the file does exist
+            System.out.println("--LOG-- Run by IDE!");
+            System.out.println("--LOG-- The " + optionsFileName + " does exist!");
+            filePath = filePath.replace("file:/", "");
+        }
         try
         {
-            File file = new File(PATH_TO_FILE);
-            Scanner scanner;
-            if (!file.exists()) {
-                copyFile(PATH_TO_DEFAULT_FILE, PATH_TO_FILE);
-            }
-            scanner = new Scanner(file);
-
+            InputStream in = Files.newInputStream(Path.of(filePath));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String result = "";
-
-            while(scanner.hasNextLine())
+            String line;
+            while((line = reader.readLine()) != null)
             {
-                result += scanner.nextLine();
+                result += line;
             }
-            scanner.close();
+            reader.close();
             return result;
 
         }catch(Exception e)
         {
+            //TODO:Handle error
+            e.printStackTrace();
             throw e;
         }
     }
 
-    private void copyFile(String fromStr, String toStr) throws IOException {
-        FileInputStream from = new FileInputStream(fromStr);
-        FileOutputStream to = new FileOutputStream(toStr);
-        to.write(from.readAllBytes());
-        from.close();
-        to.close();
+    private void copyFile(InputStream from, String toStr){
+
+        try {
+            FileOutputStream out = new FileOutputStream(toStr);
+            out.write(from.readAllBytes());
+            out.flush();
+            out.close();
+        }
+        catch(Exception e) {
+            //TODO:Handle error
+            e.printStackTrace();
+        }
     }
 }

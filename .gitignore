@@ -1,4 +1,3 @@
 target/
 .idea
-src/main/resources/highscore.json
-src/main/resources/options.json
+dependency-reduced-pom.xml
