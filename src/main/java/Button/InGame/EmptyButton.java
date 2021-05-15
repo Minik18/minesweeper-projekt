@@ -3,6 +3,7 @@ package Button.InGame;
 import Button.AbstractButton;
 import Button.ButtonGenerator;
 import Control.RevealButton;
+import Logging.Log;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public class EmptyButton extends AbstractButton {
     public void onRightClickEvent() {
         if(!isDisable())
         {
+            Log.log("info",getClass().getName() + " - Clicked Empty button!");
             RevealButton.incrementRevealedNumber();
             this.setGraphic(null);
             AbstractButton[][] buttonMatrix = ButtonGenerator.getButtonMatrix();

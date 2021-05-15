@@ -1,5 +1,6 @@
 package Option;
 
+import Logging.Log;
 import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
 import Option.DataOption.Option;
@@ -80,69 +81,86 @@ public class ImportOptions {
         return map;
     }
 
-    private String getStringFromFile() throws Exception  {
+    private String getStringFromFile() {
 
-        String filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(optionsFileName)),"UTF-8");
+        String filePath = null;
+        try {
+            filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(optionsFileName)),"UTF-8");
+        } catch (UnsupportedEncodingException ignored) {
+            //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
+            Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+        }
 
         if(filePath == "null")  //Run by IDE and the file does not exist
         {
-            System.out.println("--LOG-- Run by IDE!");
-            System.out.println("--LOG-- The " + optionsFileName + " does not exist!");
-             String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-             appLocation = appLocation.replace("file:/","");
+             Log.log("info",getClass().getName() + " - Run by IDE!");
+             Log.log("warning",getClass().getName() + " - The " + optionsFileName + " file does not exist!");
+
+            String appLocation = null;
+            try {
+                appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+            } catch (UnsupportedEncodingException ignored) {
+                //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
+                Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+            }
+
+            appLocation = appLocation.replace("file:/","");
              copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
              filePath = appLocation + optionsFileName;
         }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
             {
-                System.out.println("--LOG-- Run by JAR!");
+                Log.log("info",getClass().getName() + " - Run by JAR!");
                 filePath = filePath.replace("jar:","").replace("file:/","");
                 filePath = filePath.substring(0,filePath.lastIndexOf("/"));
                 filePath = filePath.substring(0,filePath.lastIndexOf("/"));
                 filePath += "/";
                 filePath += optionsFileName;
-                System.out.println(filePath);
                 File file = new File(filePath);
                 if(!file.exists()) //Run by jar and the file does not exist
                 {
-                    System.out.println("--LOG-- The " + optionsFileName + " does not exist!");
-                    String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+                    Log.log("warning",getClass().getName() + " - The " + optionsFileName + " file does not exist!");
+
+                    String appLocation = null;
+                    try {
+                        appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+                    } catch (UnsupportedEncodingException ignored) {
+                        //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
+                        Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+                    }
+
                     appLocation = appLocation.replace("file:/","").replace("jar:/","");
                     appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                     appLocation += "/";
                     copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
                     filePath = appLocation + optionsFileName;
                 }else { //Run by jar and the file exist
-                    System.out.println("--LOG-- The " + optionsFileName + " does exist!");
-                    System.out.println(filePath);
+                    Log.log("info",getClass().getName() + " - The " + optionsFileName + " file does exist!");
                 }
             }else { //Run by IDE and the file does exist
-            System.out.println("--LOG-- Run by IDE!");
-            System.out.println("--LOG-- The " + optionsFileName + " does exist!");
+            Log.log("info",getClass().getName() + " - Run by IDE!");
+            Log.log("info",getClass().getName() + " - The " + optionsFileName + " file does exist!");
             filePath = filePath.replace("file:/", "");
         }
+        String result = "";
         try
         {
             InputStream in = Files.newInputStream(Path.of(filePath));
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            String result = "";
             String line;
             while((line = reader.readLine()) != null)
             {
                 result += line;
             }
             reader.close();
-            return result;
-
-        }catch(Exception e)
+        }catch(IOException e)
         {
-            //TODO:Handle error
-            e.printStackTrace();
-            throw e;
+            Log.log("error",getClass().getName() + " When reading file! " + e.getCause().getMessage());
         }
+        return result;
     }
 
     private void copyFile(InputStream from, String toStr){
-
+        Log.log("debug",getClass().getName() + " - Creating " + optionsFileName + " file!");
         try {
             FileOutputStream out = new FileOutputStream(toStr);
             out.write(from.readAllBytes());
@@ -150,8 +168,8 @@ public class ImportOptions {
             out.close();
         }
         catch(Exception e) {
-            //TODO:Handle error
-            e.printStackTrace();
+            Log.log("error",getClass().getName() + " - Error creating " + optionsFileName + " file! Cause: " + e.getCause().getMessage());
         }
+        Log.log("debug",getClass().getName() + " - Successfully created " + optionsFileName + " file!");
     }
 }

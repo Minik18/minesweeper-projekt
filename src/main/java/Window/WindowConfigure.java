@@ -1,9 +1,9 @@
 package Window;
 
 import Control.Controller;
-import Exception.UnknownButtonException;
 
 import Button.ButtonGenerator;
+import Logging.Log;
 import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
 import Option.DataOption.WindowOptions;
@@ -46,6 +46,7 @@ public class WindowConfigure {
         controller.bombNumber.setText(gameOptions.getDifficulty().toString());
         controller.nickName.setText(gameOptions.getNickName());
 
+        Log.log("info", getClass().getName() + " - Successfully configured the game panel!");
         configureMenuPanel(controller);
 
     }
@@ -64,11 +65,7 @@ public class WindowConfigure {
             controller.numberInput.setDisable(true);
             controller.changeDifficulty.setDisable(true);
             controller.console.setText("Lets get started!...");
-            try {
-                controller.addButtonsToGamePane();
-            } catch (UnknownButtonException e) {
-               //TODO: Print error message
-            }
+            controller.addButtonsToGamePane();
         });
         controller.exit.setOnMouseClicked(action ->
         {
@@ -138,9 +135,10 @@ public class WindowConfigure {
         {
             controller.setHighscoreScene();
         });
+        Log.log("info", getClass().getName() + " - Successfully configured the menu panel!");
 
     }
-    public void addButtonsToGamePane(Controller controller) throws UnknownButtonException {
+    public void addButtonsToGamePane(Controller controller) {
         controller.gamePane.getChildren().clear();
         Dimension size;
         size = windowOptions.getGamePanelSize();
@@ -149,5 +147,6 @@ public class WindowConfigure {
         buttonGenerator = new ButtonGenerator();
         pane = buttonGenerator.generateButtons(size, pane);
         controller.gamePane.getChildren().add(pane);
+        Log.log("info", getClass().getName() + " - Successfully added buttons to game panel!");
     }
 }

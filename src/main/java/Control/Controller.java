@@ -1,5 +1,6 @@
 package Control;
 
+import Logging.Log;
 import Option.UpdateFile;
 import Window.HighscoreWindow;
 import Window.WindowConfigure;
@@ -67,6 +68,7 @@ public class Controller {
         gamePane.getChildren().clear();
         endTimer();
         stop.setDisable(true);
+        Log.log("info",getClass().getName() + " - Restarted state!");
     }
 
     public void start()
@@ -81,12 +83,14 @@ public class Controller {
     public void startTimer()
     {
         timer.startTimer();
+        Log.log("info",getClass().getName() + " - Started timer!");
     }
     public void endTimer()
     {
         timer.endTimer();
+        Log.log("info",getClass().getName() + " - Stopped timer!");
     }
-    public void addButtonsToGamePane() throws UnknownButtonException {
+    public void addButtonsToGamePane(){
         WindowConfigure.getInstance().addButtonsToGamePane(this);
     }
     public void updateNickname(String name)
@@ -99,6 +103,7 @@ public class Controller {
     }
     public void setHighscoreScene()
     {
+        Log.log("info",getClass().getName() + " - Load scoreboard!");
         highscoreWindow.setScene(stage,stage.getScene());
         highscoreWindow.setup();
         stage.setScene(highscoreWindow.getScene());

@@ -1,5 +1,7 @@
 package Control;
 
+import Logging.Log;
+
 public class RevealButton {
 
     private static Controller controller;
@@ -48,6 +50,7 @@ public class RevealButton {
     {
         if(revealedButtonNumber + bombNumber == buttonNumber && flagNumber == bombNumber)
         {
+            Log.log("info",RevealButton.class.getName() + " - Won game!");
             restartFlagNumber();
             restartReveledCounter();
             controller.console.setText("Congratulation! You made it!");
@@ -56,6 +59,7 @@ public class RevealButton {
     }
     public static void lose()
     {
+        Log.log("info",RevealButton.class.getName() + " - Lost game!");
         restartFlagNumber();
         restartReveledCounter();
         controller.console.setText("Do not worry! Better luck next time!");

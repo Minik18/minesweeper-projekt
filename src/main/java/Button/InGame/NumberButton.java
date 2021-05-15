@@ -2,11 +2,9 @@ package Button.InGame;
 
 import Button.AbstractButton;
 import Control.RevealButton;
+import Logging.Log;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -19,6 +17,7 @@ public class NumberButton extends AbstractButton {
     @Override
     public void onRightClickEvent() {
         if(!isDisable()) {
+            Log.log("info",getClass().getName() + " - Clicked Number button!");
 
             Image image;
             pathToNumbers = pathToNumbers + score.toString() + ".png";
@@ -27,9 +26,9 @@ public class NumberButton extends AbstractButton {
                 image = new Image(filePath);
                 ImageView imageView = new ImageView(image);
                 setGraphic(imageView);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                //TODO: Handle Error
+            } catch (UnsupportedEncodingException ignored) {
+                //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
+                Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
             }
             setDisable(true);
             setOpacity(1);

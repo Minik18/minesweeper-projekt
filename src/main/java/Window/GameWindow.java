@@ -1,5 +1,7 @@
 package Window;
 
+import Logging.Log;
+import Main.Main;
 import Option.DataOption.WindowOptions;
 import Option.GeneralOptions;
 import javafx.fxml.FXMLLoader;
@@ -36,12 +38,13 @@ public class GameWindow extends AbstractWindow {
         stage.setWidth(windowOptions.getInfoPanelSize().width + windowOptions.getGamePanelSize().width ) ;
         stage.setResizable(windowOptions.isResizeable());
         stage.setTitle(windowOptions.getTitle());
+        Log.log("info", getClass().getName() + " - Main stage initial setup was successfully made!");
         try
         {
             stage.getIcons().add(windowOptions.getImage());
         }catch(Exception e)
         {
-            //TODO: Handle error
+            Log.log("error", getClass().getName() + " - Error when adding icon to stage! " + e.getCause().getMessage());
         }
     }
 

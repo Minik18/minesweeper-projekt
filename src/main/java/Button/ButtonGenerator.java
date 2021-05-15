@@ -4,6 +4,7 @@ import Button.InGame.EmptyButton;
 import Button.InGame.NumberButton;
 import Control.RevealButton;
 import Exception.UnknownButtonException;
+import Logging.Log;
 import Option.DataOption.ButtonOptions;
 import Option.DataOption.GameOptions;
 import Option.GeneralOptions;
@@ -32,13 +33,13 @@ public class ButtonGenerator {
     }
 
 
-    public GridPane generateButtons(Dimension frameSize, GridPane pane) throws UnknownButtonException {
+    public GridPane generateButtons(Dimension frameSize, GridPane pane) {
         List<Point> bombList = generateBombs(frameSize);
         RevealButton.setBombNumber(bombList.size());
         buttonMatrix = new AbstractButton[frameSize.width / size.width + 1 ][frameSize.height / size.height + 1];
         Point temp;
         new EmptyButton();
-        AbstractButton button;
+        AbstractButton button = new EmptyButton();
         Integer bombNumber = 0;
         Integer buttonNumber = 0;
         for(int i = 0;i < frameSize.width;i += size.width)
@@ -48,11 +49,19 @@ public class ButtonGenerator {
                 temp = new Point(i,j);
                 if(bombList.contains(temp))
                 {
-                    button = buttonFactory.getButton(State.BOMB);
+                    try {
+                        button = buttonFactory.getButton(State.BOMB);
+                    } catch (UnknownButtonException e) {
+                        Log.log("error", getClass().getName() + " - Unknown button configuration! " + e.getMessage());
+                    }
                     bombNumber ++;
                 }else
                 {
-                    button = getButton(temp,bombList);
+                    try {
+                        button = getButton(temp,bombList);
+                    } catch (UnknownButtonException e) {
+                        Log.log("error", getClass().getName() + " - Unknown button configuration! " + e.getMessage());
+                    }
                 }
                 button.setSize(size);
                 AbstractButton finalButton = button;
@@ -74,6 +83,7 @@ public class ButtonGenerator {
         }
         RevealButton.setBombNumber(bombNumber);
         RevealButton.setButtonNumber(buttonNumber);
+        Log.log("info", getClass().getName() + " - Successfully created buttons to game panel!");
         return pane;
     }
 

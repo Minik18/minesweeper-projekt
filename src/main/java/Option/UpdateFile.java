@@ -1,5 +1,6 @@
 package Option;
 
+import Logging.Log;
 import Score.Score;
 import Score.ImportScore;
 import com.google.gson.Gson;
@@ -31,7 +32,7 @@ public class UpdateFile {
         if (!oldName.equals(name)) {
             jsonObject.getJSONObject("options").getJSONObject("gameOptions").put("nickName", name);
             try {
-                String appLocation = getClass().getProtectionDomain().getCodeSource().getLocation().toString();
+                String appLocation = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().toString(),"UTF-8");
                 appLocation = appLocation.replace("jar:/", "").replace("file:/","");
                 appLocation = appLocation.substring(0, appLocation.lastIndexOf("/"));
                 appLocation += "/";
@@ -40,8 +41,9 @@ public class UpdateFile {
                 out.write(jsonObject.toString().getBytes());
                 out.flush();
                 out.close();
-            } catch (IOException e) {
-                //TODO: Log error
+                Log.log("info", getClass().getName() + " - Successfully updated the nickname!");
+            } catch (Exception e) {
+                Log.log("error", getClass().getName() + " - Error when opening file. " + e.getMessage());
             }
 
         }
@@ -75,9 +77,9 @@ public class UpdateFile {
             out.write(root.toString().getBytes());
             out.flush();
             out.close();
+            Log.log("info", getClass().getName() + " - Successfully updated the score!");
         } catch (Exception e) {
-            //TODO: Log error
-            e.printStackTrace();
+            Log.log("error", getClass().getName() + " - Error when opening file. " + e.getCause().getMessage());
         }
     }
 
@@ -98,9 +100,9 @@ public class UpdateFile {
                 out.write(jsonObject.toString().getBytes());
                 out.flush();
                 out.close();
+                Log.log("info", getClass().getName() + " - Successfully updated the difficulty!");
             } catch (IOException e) {
-                //TODO: Log error
-                e.printStackTrace();
+                Log.log("error", getClass().getName() + " - Error when opening file. " + e.getCause().getMessage());
             }
 
         }
@@ -112,23 +114,23 @@ public class UpdateFile {
         try {
             filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)),"UTF-8");
         } catch (UnsupportedEncodingException ignored) {
-            //Ignored exception because encoding will always be UTF-8 which is a valid encoding
+            //Ignored because the encoding will always be UTF_8 which is a valid encoding format
+            Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
         }
         if(filePath == "null")  //Run by IDE and the file does not exist
         {
-            System.out.println("--LOG-- Run by IDE!");
-            System.out.println("--LOG-- The " + path + " does not exist!");
+            Log.log("warning", getClass().getName() + " - The " + path + " file does not exits!");
             String appLocation = null;
             try {
                 appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+            } catch (UnsupportedEncodingException ignored) {
+                //Ignored because the encoding will always be UTF_8 which is a valid encoding format
+                Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
             }
             appLocation = appLocation.replace("file:/","");
             filePath = appLocation + path;
         }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
         {
-            System.out.println("--LOG-- Run by JAR!");
             filePath = filePath.replace("jar:","").replace("file:/","");
             filePath = filePath.substring(0,filePath.lastIndexOf("/"));
             filePath = filePath.substring(0,filePath.lastIndexOf("/"));
@@ -138,24 +140,23 @@ public class UpdateFile {
             File file = new File(filePath);
             if(!file.exists()) //Run by jar and the file does not exist
             {
-                System.out.println("--LOG-- The " + path + " does not exist!");
+                Log.log("warning", getClass().getName() + " - The " + path + " file does not exits!");
                 String appLocation = null;
                 try {
                     appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                } catch (UnsupportedEncodingException ignored) {
+                    //Ignored because the encoding will always be UTF_8 which is a valid encoding format
+                    Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
                 }
                 appLocation = appLocation.replace("file:/","").replace("jar:/","");
                 appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                 appLocation += "/";
                 filePath = appLocation + path;
             }else { //Run by jar and the file exist
-                System.out.println("--LOG-- The " + path + " does exist!");
-                System.out.println(filePath);
+                Log.log("info", getClass().getName() + " - The " + path + " file does exits!");
             }
         }else { //Run by IDE and the file does exist
-            System.out.println("--LOG-- Run by IDE!");
-            System.out.println("--LOG-- The " + path + " does exist!");
+            Log.log("info", getClass().getName() + " - The " + path + " file does exits!");
             filePath = filePath.replace("file:/", "");
         }
         try
@@ -173,8 +174,7 @@ public class UpdateFile {
 
         }catch(Exception e)
         {
-            //TODO:Handle error
-            e.printStackTrace();
+            Log.log("error", getClass().getName() + " - Error when reading file! "  + e.getCause().getMessage());
         }
         return result;
     }

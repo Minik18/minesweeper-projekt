@@ -1,5 +1,6 @@
 package Window;
 
+import Logging.Log;
 import Score.ImportScore;
 import Control.HighscoreController;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,7 @@ public class HighscoreWindow  {
             controller = loader.getController();
             scene = new Scene(root);
         } catch (IOException e) {
-            //TODO: Log error
+            Log.log("error", getClass().getName() + " " + e.getCause().getMessage());
         }
     }
     public Scene getScene()
@@ -62,6 +63,7 @@ public class HighscoreWindow  {
         time.setCellValueFactory(new PropertyValueFactory<>("time"));
 
         ImportScore.getInstance().getScores().forEach(controller.tableView.getItems()::add);
+        Log.log("info", getClass().getName() + " - Score stage initial setup was successfully made!");
 
     }
 }

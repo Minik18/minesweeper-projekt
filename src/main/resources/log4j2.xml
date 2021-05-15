@@ -1,0 +1,28 @@
+<Configuration>
+    <Properties>
+        <Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <MarkerPatternSelector defaultPattern="%highlight{${LOG_PATTERN}}{INFO=green}">
+                    <PatternMatch key="INFO" pattern="%highlight{${LOG_PATTERN}}{INFO=green}"/>
+                    <PatternMatch key="ERROR" pattern="%highlight{${LOG_PATTERN}}{INFO=red}"/>
+                    <PatternMatch key="WARNING" pattern="%highlight{${LOG_PATTERN}}{INFO=yellow}"/>
+                    <PatternMatch key="DEBUG" pattern="%highlight{${LOG_PATTERN}}{INFO=blue}"/>
+                </MarkerPatternSelector>
+            </PatternLayout>
+        </Console>
+        <File name="File" fileName="minesweeper_log.log"  append="false">
+            <PatternLayout pattern="%d{HH:mm:ss}${LOG_PATTERN}"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+        <Logger name="java.Logging.Log" additivity="true">
+        </Logger>
+    </Loggers>
+</Configuration>

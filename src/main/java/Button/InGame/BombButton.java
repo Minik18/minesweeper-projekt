@@ -3,6 +3,7 @@ package Button.InGame;
 import Button.AbstractButton;
 import Control.Controller;
 import Control.RevealButton;
+import Logging.Log;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ public class BombButton extends AbstractButton {
             setGraphic(imageView);
             setDisable(true);
             setOpacity(1);
+            Log.log("info",getClass().getName() + " - Clicked Bomb button!");
             RevealButton.lose();
         }
     }

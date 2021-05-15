@@ -1,10 +1,8 @@
 package Button;
 
-import Button.AbstractButton;
 import Button.InGame.BombButton;
 import Button.InGame.EmptyButton;
 import Button.InGame.NumberButton;
-import Button.State;
 import Exception.UnknownButtonException;
 
 public class ButtonFactory {
