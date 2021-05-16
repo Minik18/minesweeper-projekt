@@ -10,6 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * This class has the responsibility to import the scores from the highscore jon file.
+ */
 public class ImportScore {
 
     private static ImportScore instance = new ImportScore();
@@ -24,6 +27,12 @@ public class ImportScore {
         return instance;
     }
 
+    /**
+     * This method imports the values from the highscore file. If the file does not exist, it creates it end sets an
+     * empty json array object to it. Then processes the values and add them together into a {@link List}. This method
+     * makes difference between whether the application is run by an IDE or a JAR file.
+     * @returns A list, containing {@link Score} objects.
+     */
     public List<Score> getScores()
     {
         list.clear();

@@ -13,6 +13,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.awt.*;
 
+/**
+ * This class is responsible for the configuration of the main scene
+ */
 public class WindowConfigure {
 
     private static WindowConfigure instance = new WindowConfigure();
@@ -28,6 +31,11 @@ public class WindowConfigure {
         return instance;
     }
 
+    /**
+     * Configures the game panel and calls the {@link WindowConfigure#configureMenuPanel(Controller)}
+     * method to set up the remaining parts of the scene.
+     * @param controller A class containing fxml elements of the main scene.
+     */
     public void configureGameWindow(Controller controller) {
         Dimension size = windowOptions.getGamePanelSize();
         controller.gamePane.setPrefSize(size.width ,size.height );
@@ -49,6 +57,22 @@ public class WindowConfigure {
         Log.log("info", getClass().getName() + " - Successfully configured the game panel!");
         configureMenuPanel(controller);
 
+    }
+
+    /**
+     * Adds button to the game panel on the main scene.
+     * @param controller  A class containing fxml elements of the main scene.
+     */
+    public void addButtonsToGamePane(Controller controller) {
+        controller.gamePane.getChildren().clear();
+        Dimension size;
+        size = windowOptions.getGamePanelSize();
+        GridPane pane = new GridPane();
+        pane.setPrefSize(size.width, size.height);
+        buttonGenerator = new ButtonGenerator();
+        pane = buttonGenerator.generateButtons(size, pane);
+        controller.gamePane.getChildren().add(pane);
+        Log.log("info", getClass().getName() + " - Successfully added buttons to game panel!");
     }
 
     private void configureMenuPanel(Controller controller)
@@ -138,15 +162,6 @@ public class WindowConfigure {
         Log.log("info", getClass().getName() + " - Successfully configured the menu panel!");
 
     }
-    public void addButtonsToGamePane(Controller controller) {
-        controller.gamePane.getChildren().clear();
-        Dimension size;
-        size = windowOptions.getGamePanelSize();
-        GridPane pane = new GridPane();
-        pane.setPrefSize(size.width, size.height);
-        buttonGenerator = new ButtonGenerator();
-        pane = buttonGenerator.generateButtons(size, pane);
-        controller.gamePane.getChildren().add(pane);
-        Log.log("info", getClass().getName() + " - Successfully added buttons to game panel!");
-    }
+
+
 }

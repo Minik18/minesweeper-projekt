@@ -5,7 +5,9 @@ import lombok.Data;
 
 import java.awt.Dimension;
 
-
+/**
+ * This class contains the imported options related to the shown window.
+ */
 @Data
 public class WindowOptions implements Option{
 

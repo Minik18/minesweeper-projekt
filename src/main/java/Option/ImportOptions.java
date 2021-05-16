@@ -15,6 +15,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * This class is responsible to import the options file, process it, and load the values into different objects.
+ */
 public class ImportOptions {
 
     private final String defaultOptionsFileName = "defaultOptions.json";
@@ -28,6 +31,12 @@ public class ImportOptions {
         return instance;
     }
 
+    /**
+     * Import values from the options file. If that not exists, then creates it copies the content in the defaultOptions
+     * file to the newly created options file and import the values. This method makes difference between weather the application
+     * is run by IDE or by a JAR file. The imported values will be sorted into the appropriate objects.
+     * @returns A map with a key as the type of the option and a value attached to it as appropriate {@link Option} object.
+     */
     public Map<String,Option> importOptions() {
         String json = "";
         try {

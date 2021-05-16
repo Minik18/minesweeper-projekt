@@ -12,6 +12,9 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * This class is responsible to update the correct options or highscore file.
+ */
 public class UpdateFile {
     private static UpdateFile instance = new UpdateFile();
     private final String optionsFileName = "options.json";
@@ -25,6 +28,11 @@ public class UpdateFile {
         return instance;
     }
 
+    /**
+     * Updates the nickname element in the options json file. This method makes a difference between whether the application
+     * is run by an IDE or from a JAR file. If the file could not be updated, the reason will be logged.
+     * @param name A new name for a player.
+     */
     public void updateNickname(String name) {
         jsonObject = new JSONObject(getString(optionsFileName));
 
@@ -50,9 +58,17 @@ public class UpdateFile {
 
     }
 
-    public void updateHighScore(String name, Long time, Integer bombNumber, Double score) {
+    /**
+     * Adds a {@link Score} object to the highscore json file. It first creates the object from the given parameters,
+     * then appends to the existing list. The score is calculated by the {@code (numberOfBombs/deltaTime) * numberOfBombs}
+     * formula.
+     * @param name The name of the player.
+     * @param time The time between the start and the end of the game.
+     * @param bombNumber The number of bombs in the current game.
+     */
+    public void updateHighScore(String name, Long time, Integer bombNumber) {
         Score scoreObj = new Score();
-        scoreObj.setScore(score);
+        scoreObj.setScore( (double) ( (bombNumber / time) * bombNumber));
         scoreObj.setName(name);
         scoreObj.setTime(time);
         scoreObj.setBombNumber(bombNumber);
@@ -83,6 +99,11 @@ public class UpdateFile {
         }
     }
 
+    /**
+     * Updates the difficulty element in the options json file. This method makes a difference between whether the application
+     * is run by an IDE or from a JAR file. If the file could not be updated, the reason will be logged.
+     * @param newNumber A new number of bombs.
+     */
     public void updateDifficulty(Integer newNumber) {
         jsonObject = new JSONObject(getString(optionsFileName));
 

@@ -17,6 +17,9 @@ import java.util.List;
 import java.awt.Dimension;
 import java.util.Random;
 
+/**
+ * A class that generates buttons according to the sizes of the given objects.
+ */
 public class ButtonGenerator {
     private Dimension size;
     private ButtonFactory buttonFactory;
@@ -26,13 +29,23 @@ public class ButtonGenerator {
     private ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
     private GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
 
+    /**
+     * Instantiates a {@link ButtonFactory} class and gets the given sizes for the buttons and gets to set number of bombs.
+     */
     public ButtonGenerator() {
         buttonFactory = new ButtonFactory();
         size = buttonOptions.getSize();
         numberOfBombs = gameOptions.getDifficulty();
     }
 
-
+    /**
+     *  Generates buttons according to the game panel size and the size of the buttons. Generates as many bomb buttons
+     *  as have been set in the options file. It creates an {@link AbstractButton} matrix for later use. Sets the
+     *  number of buttons and the number of tiles in {@link RevealButton} class.
+     * @param frameSize The size of the game panel.
+     * @param pane The empty panel.
+     * @returns A set up panel which contains the generated number in each cell.
+     */
     public GridPane generateButtons(Dimension frameSize, GridPane pane) {
         List<Point> bombList = generateBombs(frameSize);
         RevealButton.setBombNumber(bombList.size());
@@ -141,6 +154,10 @@ public class ButtonGenerator {
         return number;
     }
 
+    /**
+     * A method to return a matrix of tiles.
+     * @returns a matrix containing the generated buttons.
+     */
     public static AbstractButton[][] getButtonMatrix() {
         return buttonMatrix;
     }

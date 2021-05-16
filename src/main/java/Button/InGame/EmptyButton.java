@@ -4,10 +4,18 @@ import Button.AbstractButton;
 import Button.ButtonGenerator;
 import Control.RevealButton;
 import Logging.Log;
-
 import java.util.ArrayList;
 
+/**
+ * In minesweeper, every tile which is not a bomb nor has a neighboring bomb tile is an empty tile. This class represent
+ * that.
+ */
 public class EmptyButton extends AbstractButton {
+    /**
+     * A method to be called when mouse right click is pressed. It disables this button to not be able to press it again,
+     * collects all of the surrounding empty and number tiles and call the {@link AbstractButton#onRightClickEvent()}
+     * method on them. Increments the revealed number of tiles for each revealed tile.
+     */
     @Override
     public void onRightClickEvent() {
         if(!isDisable())

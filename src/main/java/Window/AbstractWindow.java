@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * An abstract class that represents a viewable window in the application.
+ */
 public abstract class AbstractWindow extends Application {
 
     protected final WindowConfigure windowConfigure = WindowConfigure.getInstance();

@@ -2,6 +2,10 @@ package Score;
 
 import lombok.Data;
 
+/**
+ * This class represents a score object. A score has a player name, a score number, an elapsed time, a number of bombs and
+ * a place on the scoreboard.
+ */
 @Data
 public class Score implements Comparable<Score>{
 

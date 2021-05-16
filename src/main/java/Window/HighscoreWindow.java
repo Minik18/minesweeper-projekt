@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * A class represent a scoreboard scene in the game.
+ */
 public class HighscoreWindow  {
 
     private static HighscoreWindow instance = new HighscoreWindow();
@@ -27,6 +30,11 @@ public class HighscoreWindow  {
         return instance;
     }
 
+    /**
+     * Sets the given stage's scene to an imported new scene.
+     * @param stage A stage to set the new scene.
+     * @param oldScene The old scene se be able to set the original back.
+     */
     public void setScene(Stage stage, Scene oldScene)
     {
         this.stage = stage;
@@ -45,6 +53,10 @@ public class HighscoreWindow  {
     {
         return scene;
     }
+
+    /**
+     * Configures the elements inside the scoreboard scene.
+     */
     public void setup()
     {
         controller.back.setOnMouseClicked(action ->
