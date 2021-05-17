@@ -2,7 +2,7 @@
 This is a minesweeper game project made for the University of Debrecen, Faculty of Informatics, Software Engineering and Technologies course.
 
 ## Usage
-This program can be run by any IDE or use the 'mvn package' command inside the working library to create a portable JAR file.
+This program can be run by any IDE or use the `mvn package` command inside the working library to create a portable JAR file.
 
 ## About the game
 This is a classical minesweeper game implementation. The game itself contains the follwoing features :
