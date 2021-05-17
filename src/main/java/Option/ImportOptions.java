@@ -164,7 +164,12 @@ public class ImportOptions {
             }else { //Run by IDE and the file does exist
             Log.log("info",getClass().getName() + " - Run by IDE!");
             Log.log("info",getClass().getName() + " - The " + optionsFileName + " file does exist!");
-            filePath = filePath.replace("file:/", "");
+            if(System.getProperty("os.name").startsWith("Win")) {
+                filePath = filePath.replace("file:/","");
+            }else
+            {
+                filePath = filePath.replace("file:","");
+            }
         }
         String result = "";
         try
