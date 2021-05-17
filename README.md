@@ -12,6 +12,6 @@ This is a classical minesweeper game implementation. The game itself contains th
 
 ## How to play the game?
 The game itself starts after pressing the **start** button. Then every other button will be disabled, you only able to stop the current game session.
-After you will see appearing buttons on the left side of the window. That is the agme itself. 
+After you will see appearing buttons on the left side of the window. That is the game itself. 
 Left click to flag a tile possibly containing bomb, re-click to remove the flag.
 Right click on the number tiles and the empty tiles. Flag every bomb tiles and the game will be won.
