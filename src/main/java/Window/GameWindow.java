@@ -56,7 +56,7 @@ public class GameWindow extends AbstractWindow {
             stage.getIcons().add(windowOptions.getImage());
         }catch(Exception e)
         {
-            Log.log("error", getClass().getName() + " - Error when adding icon to stage! " + e.getCause().getMessage());
+            Log.log("error", getClass().getName() + " - Error when adding icon to stage! " + e.getMessage());
         }
     }
 

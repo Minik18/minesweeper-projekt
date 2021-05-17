@@ -95,7 +95,7 @@ public class UpdateFile {
             out.close();
             Log.log("info", getClass().getName() + " - Successfully updated the score!");
         } catch (Exception e) {
-            Log.log("error", getClass().getName() + " - Error when opening file. " + e.getCause().getMessage());
+            Log.log("error", getClass().getName() + " - Error when opening file. " + e.getMessage());
         }
     }
 
@@ -123,7 +123,7 @@ public class UpdateFile {
                 out.close();
                 Log.log("info", getClass().getName() + " - Successfully updated the difficulty!");
             } catch (IOException e) {
-                Log.log("error", getClass().getName() + " - Error when opening file. " + e.getCause().getMessage());
+                Log.log("error", getClass().getName() + " - Error when opening file. " + e.getMessage());
             }
 
         }
@@ -136,7 +136,7 @@ public class UpdateFile {
             filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)),"UTF-8");
         } catch (UnsupportedEncodingException ignored) {
             //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-            Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
+            Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
         }
         if(filePath == "null")  //Run by IDE and the file does not exist
         {
@@ -146,13 +146,25 @@ public class UpdateFile {
                 appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
             } catch (UnsupportedEncodingException ignored) {
                 //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-                Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
+                Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
             }
-            appLocation = appLocation.replace("file:/","");
+            //Making sure to work both on Windows and Linux based systems
+            if(System.getProperty("os.name").startsWith("Win")) {
+                appLocation = appLocation.replace("file:/", "").replace("jar:/", "");
+            }else
+            {
+                appLocation = appLocation.replace("file:", "").replace("jar:/", "");
+            }
             filePath = appLocation + path;
         }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
         {
-            filePath = filePath.replace("jar:","").replace("file:/","");
+            //Making sure to work both on Windows and Linux based systems
+            if(System.getProperty("os.name").startsWith("Win")) {
+                filePath = filePath.replace("jar:","").replace("file:/","");
+            }else
+            {
+                filePath = filePath.replace("jar:","").replace("file:","");
+            }
             filePath = filePath.substring(0,filePath.lastIndexOf("/"));
             filePath = filePath.substring(0,filePath.lastIndexOf("/"));
             filePath += "/";
@@ -167,9 +179,15 @@ public class UpdateFile {
                     appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
                 } catch (UnsupportedEncodingException ignored) {
                     //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-                    Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
+                    Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
                 }
-                appLocation = appLocation.replace("file:/","").replace("jar:/","");
+                //Making sure to work both on Windows and Linux based systems
+                if(System.getProperty("os.name").startsWith("Win")) {
+                    appLocation = appLocation.replace("file:/", "").replace("jar:/", "");
+                }else
+                {
+                    appLocation = appLocation.replace("file:", "").replace("jar:/", "");
+                }
                 appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                 appLocation += "/";
                 filePath = appLocation + path;
@@ -195,7 +213,7 @@ public class UpdateFile {
 
         }catch(Exception e)
         {
-            Log.log("error", getClass().getName() + " - Error when reading file! "  + e.getCause().getMessage());
+            Log.log("error", getClass().getName() + " - Error when reading file! "  + e.getMessage());
         }
         return result;
     }

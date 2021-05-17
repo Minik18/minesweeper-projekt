@@ -78,7 +78,7 @@ public class ImportScore {
             filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(highscoreFileName)),"UTF-8");
         } catch (UnsupportedEncodingException ignored) {
             //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-            Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
+            Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
         }
          if(filePath == "null")  //Run by IDE and the file does not exist
          {
@@ -88,14 +88,27 @@ public class ImportScore {
                  appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
              } catch (UnsupportedEncodingException ignored) {
                  //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-                 Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
+                 Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
              }
-             appLocation = appLocation.replace("file:/","");
+             //Making sure to work on Linux and Windows based systems as well
+             if(System.getProperty("os.name").startsWith("Win")) {
+                 appLocation = appLocation.replace("file:/", "").replace("jar:/","");
+             }else
+             {
+                 appLocation = appLocation.replace("file:", "").replace("jar:/","");
+             }
              filePath = appLocation + highscoreFileName;
              createFile(filePath,result);
          }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
          {
-             filePath = filePath.replace("jar:","").replace("file:/","");
+             //Making sure to work on both Linus and Windows base systems
+             if(System.getProperty("os.name").startsWith("Win"))
+             {
+                 filePath = filePath.replace("jar:","").replace("file:/","");
+             }else
+             {
+                 filePath = filePath.replace("jar:","").replace("file:","");
+             }
              filePath = filePath.substring(0,filePath.lastIndexOf("/"));
              filePath = filePath.substring(0,filePath.lastIndexOf("/"));
              filePath += "/";
@@ -109,9 +122,15 @@ public class ImportScore {
                  try {
                      appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
                  } catch (UnsupportedEncodingException ignored) {
-                     Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getCause().getMessage());
+                     Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
                  }
-                 appLocation = appLocation.replace("file:/","").replace("jar:/","");
+                 //Making sure to work on Linux and Windows based systems as well
+                 if(System.getProperty("os.name").startsWith("Win")) {
+                     appLocation = appLocation.replace("file:/", "").replace("jar:/","");
+                 }else
+                 {
+                     appLocation = appLocation.replace("file:", "").replace("jar:/","");
+                 }
                  appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                  appLocation += "/";
                  filePath = appLocation + highscoreFileName;
@@ -137,7 +156,7 @@ public class ImportScore {
 
          }catch(Exception e)
          {
-             Log.log("error",getClass().getName() + " - Error when reading file! " + e.getCause().getMessage());
+             Log.log("error",getClass().getName() + " - Error when reading file! " + e.getMessage());
          }
         return result;
     }
@@ -154,7 +173,7 @@ public class ImportScore {
         } catch (FileNotFoundException e) {
             Log.log("error",getClass().getName() + " - The " + path + " file does not exist!");
         } catch (IOException e) {
-            Log.log("error",getClass().getName() + " - Error when creating file! " + e.getCause().getMessage());
+            Log.log("error",getClass().getName() + " - Error when creating file! " + e.getMessage());
         }
     }
 

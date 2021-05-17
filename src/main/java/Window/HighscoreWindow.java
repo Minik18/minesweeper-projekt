@@ -46,7 +46,7 @@ public class HighscoreWindow  {
             controller = loader.getController();
             scene = new Scene(root);
         } catch (IOException e) {
-            Log.log("error", getClass().getName() + " " + e.getCause().getMessage());
+            Log.log("error", getClass().getName() + " " + e.getMessage());
         }
     }
     public Scene getScene()

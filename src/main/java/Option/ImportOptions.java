@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.awt.*;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -97,7 +98,7 @@ public class ImportOptions {
             filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(optionsFileName)),"UTF-8");
         } catch (UnsupportedEncodingException ignored) {
             //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-            Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+            Log.log("error",getClass().getName() + " " + ignored.getMessage());
         }
 
         if(filePath == "null")  //Run by IDE and the file does not exist
@@ -110,16 +111,26 @@ public class ImportOptions {
                 appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
             } catch (UnsupportedEncodingException ignored) {
                 //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-                Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+                Log.log("error",getClass().getName() + " " + ignored.getMessage());
             }
-
-            appLocation = appLocation.replace("file:/","");
+            //Making sure to work on Linux and Windows based systems as well
+            if(System.getProperty("os.name").startsWith("Win")) {
+                appLocation = appLocation.replace("file:/", "");
+            }else
+            {
+                appLocation = appLocation.replace("file:", "");
+            }
              copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
              filePath = appLocation + optionsFileName;
         }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
             {
                 Log.log("info",getClass().getName() + " - Run by JAR!");
-                filePath = filePath.replace("jar:","").replace("file:/","");
+                if(System.getProperty("os.name").startsWith("Win")) {
+                    filePath = filePath.replace("jar:","").replace("file:/","");
+                }else
+                {
+                    filePath = filePath.replace("jar:","").replace("file:","");
+                }
                 filePath = filePath.substring(0,filePath.lastIndexOf("/"));
                 filePath = filePath.substring(0,filePath.lastIndexOf("/"));
                 filePath += "/";
@@ -134,10 +145,15 @@ public class ImportOptions {
                         appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
                     } catch (UnsupportedEncodingException ignored) {
                         //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-                        Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+                        Log.log("error",getClass().getName() + " " + ignored.getMessage());
                     }
-
-                    appLocation = appLocation.replace("file:/","").replace("jar:/","");
+                    //Making sure to work on Linux and Windows based systems as well
+                    if(System.getProperty("os.name").startsWith("Win")) {
+                        appLocation = appLocation.replace("file:/", "").replace("jar:/","");
+                    }else
+                    {
+                        appLocation = appLocation.replace("file:", "").replace("jar:/","");
+                    }
                     appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                     appLocation += "/";
                     copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
@@ -163,7 +179,7 @@ public class ImportOptions {
             reader.close();
         }catch(IOException e)
         {
-            Log.log("error",getClass().getName() + " When reading file! " + e.getCause().getMessage());
+            Log.log("error",getClass().getName() + " When reading file! " + e.getMessage());
         }
         return result;
     }
@@ -175,10 +191,11 @@ public class ImportOptions {
             out.write(from.readAllBytes());
             out.flush();
             out.close();
+            Log.log("debug",getClass().getName() + " - Successfully created " + optionsFileName + " file!");
         }
         catch(Exception e) {
-            Log.log("error",getClass().getName() + " - Error creating " + optionsFileName + " file! Cause: " + e.getCause().getMessage());
+            Log.log("error",getClass().getName() + " - Error creating " + optionsFileName + " file! Cause: " + e.getMessage());
         }
-        Log.log("debug",getClass().getName() + " - Successfully created " + optionsFileName + " file!");
+
     }
 }

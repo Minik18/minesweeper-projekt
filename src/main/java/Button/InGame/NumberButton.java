@@ -36,7 +36,7 @@ public class NumberButton extends AbstractButton {
                 setGraphic(imageView);
             } catch (UnsupportedEncodingException ignored) {
                 //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-                Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+                Log.log("error",getClass().getName() + " " + ignored.getMessage());
             }
             setDisable(true);
             setOpacity(1);

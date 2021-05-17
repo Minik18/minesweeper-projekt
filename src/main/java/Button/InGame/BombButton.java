@@ -29,7 +29,7 @@ public class BombButton extends AbstractButton {
                 filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)),"UTF-8");
             } catch (UnsupportedEncodingException ignored) {
                 //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-                Log.log("error",getClass().getName() + " " + ignored.getCause().getMessage());
+                Log.log("error",getClass().getName() + " " + ignored.getMessage());
             }
             image = new Image(filePath);
             ImageView imageView = new ImageView(image);
