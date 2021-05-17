@@ -140,7 +140,12 @@ public class ImportScore {
              }
          }else { //Run by IDE and the file does exist
              Log.log("info",getClass().getName() + " - The " + highscoreFileName + " file does exist!");
-             filePath = filePath.replace("file:/", "");
+             if(System.getProperty("os.name").startsWith("Win")) {
+                 filePath = filePath.replace("file:/", "").replace("jar:/","");
+             }else
+             {
+                 filePath = filePath.replace("file:", "").replace("jar:/","");
+             }
          }
          try
          {

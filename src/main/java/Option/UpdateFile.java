@@ -41,7 +41,12 @@ public class UpdateFile {
             jsonObject.getJSONObject("options").getJSONObject("gameOptions").put("nickName", name);
             try {
                 String appLocation = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().toString(),"UTF-8");
-                appLocation = appLocation.replace("jar:/", "").replace("file:/","");
+                if(System.getProperty("os.name").startsWith("Win")) {
+                    appLocation = appLocation.replace("jar:/", "").replace("file:/", "");
+                }else
+                {
+                    appLocation = appLocation.replace("jar:/", "").replace("file:", "");
+                }
                 appLocation = appLocation.substring(0, appLocation.lastIndexOf("/"));
                 appLocation += "/";
                 appLocation += optionsFileName;
@@ -85,8 +90,12 @@ public class UpdateFile {
         root.put("scores", scores);
         try {
             String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-            appLocation = appLocation.replace("jar:/", "").replace("file:/","");
-            appLocation = appLocation.substring(0, appLocation.lastIndexOf("/"));
+            if(System.getProperty("os.name").startsWith("Win")) {
+                appLocation = appLocation.replace("jar:/", "").replace("file:/", "");
+            }else
+            {
+                appLocation = appLocation.replace("jar:/", "").replace("file:", "");
+            }            appLocation = appLocation.substring(0, appLocation.lastIndexOf("/"));
             appLocation += "/";
             appLocation += scoreFileName;
             FileOutputStream out = new FileOutputStream(appLocation);
@@ -113,8 +122,12 @@ public class UpdateFile {
             jsonObject.getJSONObject("options").getJSONObject("gameOptions").put("difficulty", newNumber);
             try {
                 String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-                appLocation = appLocation.replace("jar:/", "").replace("file:/","");
-                appLocation = appLocation.substring(0, appLocation.lastIndexOf("/"));
+                if(System.getProperty("os.name").startsWith("Win")) {
+                    appLocation = appLocation.replace("jar:/", "").replace("file:/", "");
+                }else
+                {
+                    appLocation = appLocation.replace("jar:/", "").replace("file:", "");
+                }                appLocation = appLocation.substring(0, appLocation.lastIndexOf("/"));
                 appLocation += "/";
                 appLocation += optionsFileName;
                 FileOutputStream out = new FileOutputStream(appLocation);
