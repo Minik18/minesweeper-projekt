@@ -70,10 +70,11 @@ public class RevealButton {
     }
     /**
      * Sets the controller that contains the main stage elements.
+     * @param control The controller of the main scene.
      */
-    public static void setController(Controller l)
+    public static void setController(Controller control)
     {
-        controller = l;
+        controller = control;
     }
 
     /**

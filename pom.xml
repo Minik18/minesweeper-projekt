@@ -8,7 +8,7 @@
     <artifactId>minesweeper</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <description>A basic minesweeper gama application made for Software Engineering and Technologies course as a mandatory project.</description>
+    <description>A basic minesweeper game application made for Software Engineering and Technologies course as a mandatory project.</description>
     <developers>
         <developer>
             <name>Dominik Fakó</name>
