@@ -44,7 +44,7 @@ public class ButtonGenerator {
      *  number of buttons and the number of tiles in {@link RevealButton} class.
      * @param frameSize The size of the game panel.
      * @param pane The empty panel.
-     * @returns A set up panel which contains the generated number in each cell.
+     * @return A set up panel which contains the generated number in each cell.
      */
     public GridPane generateButtons(Dimension frameSize, GridPane pane) {
         List<Point> bombList = generateBombs(frameSize);
@@ -99,7 +99,13 @@ public class ButtonGenerator {
         Log.log("info", getClass().getName() + " - Successfully created buttons to game panel!");
         return pane;
     }
-
+    /**
+     * A method to return a matrix of tiles.
+     * @return a matrix containing the generated buttons.
+     */
+    public static AbstractButton[][] getButtonMatrix() {
+        return buttonMatrix;
+    }
     private AbstractButton getButton(Point point, List<Point> bombList) throws UnknownButtonException {
         Integer counter = 0;
         Point temp;
@@ -154,13 +160,7 @@ public class ButtonGenerator {
         return number;
     }
 
-    /**
-     * A method to return a matrix of tiles.
-     * @returns a matrix containing the generated buttons.
-     */
-    public static AbstractButton[][] getButtonMatrix() {
-        return buttonMatrix;
-    }
+
 
 
 }

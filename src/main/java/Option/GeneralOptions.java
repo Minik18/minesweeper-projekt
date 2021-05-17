@@ -14,6 +14,10 @@ public class GeneralOptions {
 
     private GeneralOptions(){}
 
+    /**
+     * Gets a {@link GeneralOptions} object.
+     * @return An instantiated {@link GeneralOptions} object.
+     */
     public static GeneralOptions getInstance()
     {
         return instance;

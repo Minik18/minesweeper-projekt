@@ -1,5 +1,6 @@
 package Control;
 
+import Button.State;
 import Logging.Log;
 
 /**
@@ -37,10 +38,18 @@ public class RevealButton {
         flagNumber--;
     }
 
+    /**
+     * Sets the number of bombs value.
+     * @param num The number of {@link State#BOMB} tiles.
+     */
     public static void setBombNumber(Integer num)
     {
         bombNumber = num;
     }
+    /**
+     * Sets the number of all the tiles in the panel..
+     * @param num The number of all tiles.
+     */
     public static void setButtonNumber(Integer num)
     {
         buttonNumber = num;
@@ -66,22 +75,7 @@ public class RevealButton {
     {
         controller = l;
     }
-    /**
-     * Checks if the player has won the game. The player is won the game when the number of revealed tiles plus the number of
-     * bomb tiles are equal to the number of all the tiles AND when the flag tiles number equal to the bomb tiles number.
-     * If yes, restarts the tracked numbers and calls {@link Controller#winState(Integer)} method.
-     */
-    private static void checkIfWin()
-    {
-        if(revealedButtonNumber + bombNumber == buttonNumber && flagNumber == bombNumber)
-        {
-            Log.log("info",RevealButton.class.getName() + " - Won game!");
-            restartFlagNumber();
-            restartReveledCounter();
-            controller.console.setText("Congratulation! You made it!");
-            controller.winState(bombNumber);
-        }
-    }
+
     /**
      * Checks if the player has lost the game. The player is lost the game when a bomb tile is pressed.
      * If yes, restarts the tracked numbers and calls {@link Controller#restartState()} method.
@@ -94,5 +88,18 @@ public class RevealButton {
         controller.console.setText("Do not worry! Better luck next time!");
         controller.restartState();
     }
+
+    private static void checkIfWin()
+    {
+        if(revealedButtonNumber + bombNumber == buttonNumber && flagNumber == bombNumber)
+        {
+            Log.log("info",RevealButton.class.getName() + " - Won game!");
+            restartFlagNumber();
+            restartReveledCounter();
+            controller.console.setText("Congratulation! You made it!");
+            controller.winState(bombNumber);
+        }
+    }
+
 
 }

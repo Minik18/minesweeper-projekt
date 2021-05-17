@@ -1,6 +1,7 @@
 package Window;
 
 import Logging.Log;
+import Option.GeneralOptions;
 import Score.ImportScore;
 import Control.HighscoreController;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +25,10 @@ public class HighscoreWindow  {
     private HighscoreController controller;
     private Stage stage;
 
-
+    /**
+     * Gets a {@link HighscoreWindow} object.
+     * @return An instantiated {@link HighscoreWindow} object.
+     */
     public static HighscoreWindow getInstance()
     {
         return instance;
@@ -49,6 +53,11 @@ public class HighscoreWindow  {
             Log.log("error", getClass().getName() + " " + e.getMessage());
         }
     }
+
+    /**
+     * Gets the attached scoreboard scene.
+     * @return A scoreboard scene.
+     */
     public Scene getScene()
     {
         return scene;

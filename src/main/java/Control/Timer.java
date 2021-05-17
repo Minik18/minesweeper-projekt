@@ -11,6 +11,10 @@ public class Timer {
 
     private Timer(){}
 
+    /**
+     * Gets a {@link Timer} object.
+     * @return An instantiated {@link Timer} object.
+     */
     public static Timer getInstance()
     {
         return instance;
@@ -33,6 +37,10 @@ public class Timer {
         deltaTime = endTime - startTime;
     }
 
+    /**
+     * Gets the elapsed time between the {@link Timer#startTime} and {@link Timer#endTime} methods.
+     * @return A time elapsed between those methods.
+     */
     public Long getDeltaTime() {
         return deltaTime;
     }

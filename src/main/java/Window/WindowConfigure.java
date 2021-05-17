@@ -27,6 +27,10 @@ public class WindowConfigure {
     private WindowConfigure() {
     }
 
+    /**
+     * Gets a {@link WindowConfigure} object.
+     * @return An instantiated {@link WindowConfigure} object.
+     */
     public static WindowConfigure getInstance() {
         return instance;
     }

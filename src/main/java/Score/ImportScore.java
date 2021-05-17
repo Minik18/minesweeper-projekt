@@ -1,6 +1,7 @@
 package Score;
 
 import Logging.Log;
+import Option.GeneralOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,6 +23,10 @@ public class ImportScore {
 
     private ImportScore(){}
 
+    /**
+     * Gets a {@link Option.ImportOptions} object.
+     * @return An instantiated {@link Option.ImportOptions} object.
+     */
     public static ImportScore getInstance()
     {
         return instance;
@@ -31,7 +36,7 @@ public class ImportScore {
      * This method imports the values from the highscore file. If the file does not exist, it creates it end sets an
      * empty json array object to it. Then processes the values and add them together into a {@link List}. This method
      * makes difference between whether the application is run by an IDE or a JAR file.
-     * @returns A list, containing {@link Score} objects.
+     * @return A list, containing {@link Score} objects.
      */
     public List<Score> getScores()
     {

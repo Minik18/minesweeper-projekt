@@ -24,6 +24,10 @@ public class UpdateFile {
     private UpdateFile() {
     }
 
+    /**
+     * Gets a {@link GeneralOptions} object.
+     * @return An instantiated {@link GeneralOptions} object.
+     */
     public static UpdateFile getInstance() {
         return instance;
     }

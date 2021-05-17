@@ -9,8 +9,14 @@ import javafx.scene.control.TableView;
  */
 public class HighscoreController {
 
+    /**
+     * An FXML table view element
+     */
     @FXML
     public TableView tableView;
+    /**
+     * An FXML button element
+     */
     @FXML
     public Button back;
 

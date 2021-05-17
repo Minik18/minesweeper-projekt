@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
- * A class taht represents the elements on the main scene and controls the different game states.
+ * A class that represents the elements on the main scene and controls the different game states.
  */
 public class Controller {
 
@@ -21,37 +21,86 @@ public class Controller {
     private HighscoreWindow highscoreWindow = HighscoreWindow.getInstance();
 
     private Stage stage;
+    /**
+     * An FXML pane element
+     */
     @FXML
     public Pane gamePane;
+    /**
+     * An FXML label element
+     */
     @FXML
     public Label nickName;
+    /**
+     * An FXML label element
+     */
     @FXML
     public Label bombNumber;
+    /**
+     * An FXML pane element
+     */
     @FXML
     public Pane menuPane;
+    /**
+     * An FXML pane element
+     */
     @FXML
     public Pane infoPane;
+    /**
+     * An FXML button element
+     */
     @FXML
     public Button start;
+    /**
+     * An FXML button element
+     */
     @FXML
     public Button stop;
+    /**
+     * An FXML button element
+     */
     @FXML
     public Button highscore;
+    /**
+     * An FXML button element
+     */
     @FXML
     public Button changeNickname;
+    /**
+     * An FXML button element
+     */
     @FXML
     public Button exit;
+    /**
+     * An FXML button element
+     */
     @FXML
     public Button changeDifficulty;
+    /**
+     * An FXML text field element
+     */
     @FXML
     public TextField nickInput;
+    /**
+     * An FXML text fieldelement
+     */
     @FXML
     public TextField numberInput;
+    /**
+     * An FXML pane element
+     */
     @FXML
     public Pane consolePane;
+    /**
+     * An FXML labelelement
+     */
     @FXML
     public Label console;
 
+    /**
+     * Sets the stage to be able to interract with it later.
+     * @param stage A stage object, represent the window of the application.
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
