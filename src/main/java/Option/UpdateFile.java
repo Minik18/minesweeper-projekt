@@ -138,25 +138,7 @@ public class UpdateFile {
             //Ignored because the encoding will always be UTF_8 which is a valid encoding format
             Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
         }
-        if(filePath == "null")  //Run by IDE and the file does not exist
-        {
-            Log.log("warning", getClass().getName() + " - The " + path + " file does not exits!");
-            String appLocation = null;
-            try {
-                appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-            } catch (UnsupportedEncodingException ignored) {
-                //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-                Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
-            }
-            //Making sure to work both on Windows and Linux based systems
-            if(System.getProperty("os.name").startsWith("Win")) {
-                appLocation = appLocation.replace("file:/", "").replace("jar:/", "");
-            }else
-            {
-                appLocation = appLocation.replace("file:", "").replace("jar:/", "");
-            }
-            filePath = appLocation + path;
-        }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
+        if (filePath.startsWith("jar")) // Run by JAR
         {
             //Making sure to work both on Windows and Linux based systems
             if(System.getProperty("os.name").startsWith("Win")) {
@@ -169,34 +151,15 @@ public class UpdateFile {
             filePath = filePath.substring(0,filePath.lastIndexOf("/"));
             filePath += "/";
             filePath += path;
-            System.out.println(filePath);
-            File file = new File(filePath);
-            if(!file.exists()) //Run by jar and the file does not exist
-            {
-                Log.log("warning", getClass().getName() + " - The " + path + " file does not exits!");
-                String appLocation = null;
-                try {
-                    appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-                } catch (UnsupportedEncodingException ignored) {
-                    //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-                    Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
-                }
-                //Making sure to work both on Windows and Linux based systems
-                if(System.getProperty("os.name").startsWith("Win")) {
-                    appLocation = appLocation.replace("file:/", "").replace("jar:/", "");
-                }else
-                {
-                    appLocation = appLocation.replace("file:", "").replace("jar:/", "");
-                }
-                appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
-                appLocation += "/";
-                filePath = appLocation + path;
-            }else { //Run by jar and the file exist
-                Log.log("info", getClass().getName() + " - The " + path + " file does exits!");
-            }
-        }else { //Run by IDE and the file does exist
+        }else //Run by IDE
+        {
             Log.log("info", getClass().getName() + " - The " + path + " file does exits!");
-            filePath = filePath.replace("file:/", "");
+            if(System.getProperty("os.name").startsWith("Win")) {
+                filePath = filePath.replace("file:/","");
+            }else
+            {
+                filePath = filePath.replace("file:","");
+            }
         }
         try
         {
