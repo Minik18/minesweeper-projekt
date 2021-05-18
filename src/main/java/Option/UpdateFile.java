@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -16,7 +17,7 @@ import java.nio.file.Path;
  * This class is responsible to update the correct options or highscore file.
  */
 public class UpdateFile {
-    private static UpdateFile instance = new UpdateFile();
+    private static final UpdateFile instance = new UpdateFile();
     private final String optionsFileName = "options.json";
     private final String scoreFileName = "highscore.json";
     private JSONObject jsonObject;
@@ -44,7 +45,7 @@ public class UpdateFile {
         if (!oldName.equals(name)) {
             jsonObject.getJSONObject("options").getJSONObject("gameOptions").put("nickName", name);
             try {
-                String appLocation = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().toString(),"UTF-8");
+                String appLocation = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().toString(), StandardCharsets.UTF_8);
                 if(System.getProperty("os.name").startsWith("Win")) {
                     appLocation = appLocation.replace("jar:/", "").replace("file:/", "");
                 }else
@@ -93,7 +94,7 @@ public class UpdateFile {
 
         root.put("scores", scores);
         try {
-            String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+            String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
             if(System.getProperty("os.name").startsWith("Win")) {
                 appLocation = appLocation.replace("jar:/", "").replace("file:/", "");
             }else
@@ -125,7 +126,7 @@ public class UpdateFile {
 
             jsonObject.getJSONObject("options").getJSONObject("gameOptions").put("difficulty", newNumber);
             try {
-                String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
+                String appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
                 if(System.getProperty("os.name").startsWith("Win")) {
                     appLocation = appLocation.replace("jar:/", "").replace("file:/", "");
                 }else
@@ -149,12 +150,7 @@ public class UpdateFile {
     private String getString(String path) {
         String filePath = null;
         String result = "";
-        try {
-            filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)),"UTF-8");
-        } catch (UnsupportedEncodingException ignored) {
-            //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-            Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
-        }
+        filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)), StandardCharsets.UTF_8);
         if (filePath.startsWith("jar")) // Run by JAR
         {
             //Making sure to work both on Windows and Linux based systems

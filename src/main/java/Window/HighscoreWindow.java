@@ -1,9 +1,9 @@
 package Window;
 
 import Logging.Log;
-import Option.GeneralOptions;
 import Score.ImportScore;
 import Control.HighscoreController;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,10 +18,9 @@ import java.io.IOException;
  */
 public class HighscoreWindow  {
 
-    private static HighscoreWindow instance = new HighscoreWindow();
+    private static final HighscoreWindow instance = new HighscoreWindow();
     private Scene scene;
     private Scene mainScene;
-    private final String PATH_TO_STAGE = "Stages/HighscoreStage.fxml";
     private HighscoreController controller;
     private Stage stage;
 
@@ -41,10 +40,11 @@ public class HighscoreWindow  {
      */
     public void setScene(Stage stage, Scene oldScene)
     {
+        String pathToStage = "Stages/HighscoreStage.fxml";
         this.stage = stage;
         mainScene = oldScene;
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(FXMLLoader.getDefaultClassLoader().getResource(PATH_TO_STAGE));
+        loader.setLocation(FXMLLoader.getDefaultClassLoader().getResource(pathToStage));
         try {
             Parent root = loader.load();
             controller = loader.getController();
@@ -68,10 +68,7 @@ public class HighscoreWindow  {
      */
     public void setup()
     {
-        controller.back.setOnMouseClicked(action ->
-        {
-            stage.setScene(mainScene);
-        });
+        controller.back.setOnMouseClicked(action -> stage.setScene(mainScene));
 
         TableColumn place = (TableColumn) controller.tableView.getColumns().get(0);
         TableColumn name = (TableColumn) controller.tableView.getColumns().get(1);
@@ -83,7 +80,8 @@ public class HighscoreWindow  {
         bombNumber.setCellValueFactory(new PropertyValueFactory<>("bombNumber"));
         time.setCellValueFactory(new PropertyValueFactory<>("time"));
 
-        ImportScore.getInstance().getScores().forEach(controller.tableView.getItems()::add);
+        ObservableList observableList = controller.tableView.getItems();
+        observableList.addAll(ImportScore.getInstance().getScores());
         Log.log("info", getClass().getName() + " - Score stage initial setup was successfully made!");
 
     }

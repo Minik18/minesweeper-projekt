@@ -6,8 +6,8 @@ import Logging.Log;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * In minesweeper, a bomb tile has a bomb and when its pressed, the player loses the game.
@@ -24,13 +24,8 @@ public class BombButton extends AbstractButton {
     public void onRightClickEvent() {
         Image image;
         if(!isDisable()) {
-            String filePath = "";
-            try {
-                filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)),"UTF-8");
-            } catch (UnsupportedEncodingException ignored) {
-                //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-                Log.log("error",getClass().getName() + " " + ignored.getMessage());
-            }
+            String filePath;
+            filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)), StandardCharsets.UTF_8);
             image = new Image(filePath);
             ImageView imageView = new ImageView(image);
             setGraphic(imageView);

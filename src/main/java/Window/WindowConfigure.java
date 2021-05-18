@@ -18,11 +18,10 @@ import java.awt.*;
  */
 public class WindowConfigure {
 
-    private static WindowConfigure instance = new WindowConfigure();
-    private  ButtonGenerator buttonGenerator;
-    private WindowOptions windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");
-    private GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
-    private ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
+    private static final WindowConfigure instance = new WindowConfigure();
+    private final WindowOptions windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");
+    private final GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
+    private final ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
 
     private WindowConfigure() {
     }
@@ -68,6 +67,7 @@ public class WindowConfigure {
      * @param controller  A class containing fxml elements of the main scene.
      */
     public void addButtonsToGamePane(Controller controller) {
+        ButtonGenerator buttonGenerator;
         controller.gamePane.getChildren().clear();
         Dimension size;
         size = windowOptions.getGamePanelSize();
@@ -95,10 +95,7 @@ public class WindowConfigure {
             controller.console.setText("Lets get started!...");
             controller.addButtonsToGamePane();
         });
-        controller.exit.setOnMouseClicked(action ->
-        {
-            controller.close();
-        });
+        controller.exit.setOnMouseClicked(action -> controller.close());
         controller.stop.setOnMouseClicked(action ->
         {
             controller.restartState();
@@ -126,15 +123,15 @@ public class WindowConfigure {
             {
                 controller.numberInput.setText("Write something here first!");
             }else if(NumberUtils.isParsable(controller.numberInput.getText())){
-                Integer inputNumber = Integer.parseInt(controller.numberInput.getText());
-                Integer maxBombs = (windowOptions.getGamePanelSize().height * windowOptions.getGamePanelSize().width) /
+                int inputNumber = Integer.parseInt(controller.numberInput.getText());
+                int maxBombs = (windowOptions.getGamePanelSize().height * windowOptions.getGamePanelSize().width) /
                         (buttonOptions.getSize().height * buttonOptions.getSize().width);
                 if(inputNumber <= 0 || inputNumber > maxBombs)
                 {
                     controller.numberInput.setText("Write a number between 0 and "+ maxBombs +" !");
                 }else
                 {
-                    controller.bombNumber.setText(inputNumber.toString());
+                    controller.bombNumber.setText(Integer.toString(inputNumber));
                     controller.updateDifficulty(inputNumber);
                     gameOptions.setDifficulty(inputNumber);
                     if(inputNumber < 20)
@@ -159,10 +156,7 @@ public class WindowConfigure {
                 controller.numberInput.setText("Write a number between 0 and 100!");
             }
         });
-        controller.highscore.setOnMouseClicked(action ->
-        {
-            controller.setHighscoreScene();
-        });
+        controller.highscore.setOnMouseClicked(action -> controller.setHighscoreScene());
         Log.log("info", getClass().getName() + " - Successfully configured the menu panel!");
 
     }

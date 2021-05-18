@@ -1,6 +1,7 @@
 package Score;
 
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  * This class represents a score object. A score has a player name, a score number, an elapsed time, a number of bombs and
@@ -16,7 +17,7 @@ public class Score implements Comparable<Score>{
     private Integer place;
 
     @Override
-    public int compareTo(Score o) {
+    public int compareTo(@NonNull Score o) {
         if(this.equals(o))
         {
             return 0;

@@ -7,7 +7,7 @@ public class Timer {
     private Long startTime;
     private Long deltaTime;
     private Long endTime;
-    private static Timer instance = new Timer();
+    private static final Timer instance = new Timer();
 
     private Timer(){}
 

@@ -15,8 +15,6 @@ import java.io.IOException;
  */
 public class GameWindow extends AbstractWindow {
 
-    private final String PATH_TO_MAIN_STAGE = "Stages/MainStage.fxml";
-
     /**
      * This method starts the configuration of the current scene.
      * @param stage A stage from the {@link javafx.application.Application} class.
@@ -37,8 +35,9 @@ public class GameWindow extends AbstractWindow {
      */
     @Override
     protected void loadStage(Stage stage) throws IOException {
+        String pathToMainStage = "Stages/MainStage.fxml";
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource(PATH_TO_MAIN_STAGE));
+        loader.setLocation(getClass().getClassLoader().getResource(pathToMainStage));
         Parent root = loader.load();
         controller = loader.getController();
         stage.setScene(new Scene(root));

@@ -16,11 +16,9 @@ import javafx.stage.Stage;
  */
 public class Controller {
 
-    private Timer timer = Timer.getInstance();
-    private UpdateFile updateFile = UpdateFile.getInstance();
-    private HighscoreWindow highscoreWindow = HighscoreWindow.getInstance();
-
-    private Stage stage;
+    private final Timer timer = Timer.getInstance();
+    private final UpdateFile updateFile = UpdateFile.getInstance();
+    private final HighscoreWindow highscoreWindow = HighscoreWindow.getInstance();
     /**
      * An FXML pane element
      */
@@ -96,6 +94,7 @@ public class Controller {
      */
     @FXML
     public Label console;
+    private Stage stage;
 
     /**
      * Sets the stage to be able to interract with it later.

@@ -9,8 +9,8 @@ import java.util.Map;
  */
 public class GeneralOptions {
 
-    private Map<String,Option> options = ImportOptions.getInstance().importOptions();
-    private static GeneralOptions instance = new GeneralOptions();
+    private final Map<String,Option> options = ImportOptions.getInstance().importOptions();
+    private static final GeneralOptions instance = new GeneralOptions();
 
     private GeneralOptions(){}
 

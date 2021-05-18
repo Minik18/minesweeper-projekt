@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.awt.*;
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -22,7 +23,7 @@ public class ImportOptions {
 
     private final String defaultOptionsFileName = "defaultOptions.json";
     private final String optionsFileName = "options.json";
-    private static ImportOptions instance = new ImportOptions();
+    private static final ImportOptions instance = new ImportOptions();
 
     private ImportOptions() {}
 
@@ -75,7 +76,7 @@ public class ImportOptions {
         wo.setResizeable(windowOptions.getBoolean("resizeable"));
         wo.setTitle(windowOptions.getString("title"));
         try {
-            String filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(windowOptions.getString("iconLocation"))),"UTF-8");
+            String filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(windowOptions.getString("iconLocation"))), StandardCharsets.UTF_8);
             wo.setImage(new Image(filePath));
         }catch (Exception e)
         {
@@ -96,26 +97,16 @@ public class ImportOptions {
 
     private String getStringFromFile() {
 
-        String filePath = null;
-        try {
-            filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(optionsFileName)),"UTF-8");
-        } catch (UnsupportedEncodingException ignored) {
-            //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-            Log.log("error",getClass().getName() + " " + ignored.getMessage());
-        }
+        String filePath;
+        filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(optionsFileName)), StandardCharsets.UTF_8);
 
-        if(filePath == "null")  //Run by IDE and the file does not exist
+        if(filePath.equals("null"))  //Run by IDE and the file does not exist
         {
              Log.log("info",getClass().getName() + " - Run by IDE!");
              Log.log("warning",getClass().getName() + " - The " + optionsFileName + " file does not exist!");
 
-            String appLocation = null;
-            try {
-                appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-            } catch (UnsupportedEncodingException ignored) {
-                //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-                Log.log("error",getClass().getName() + " " + ignored.getMessage());
-            }
+            String appLocation;
+            appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
             //Making sure to work on Linux and Windows based systems as well
             if(System.getProperty("os.name").startsWith("Win")) {
                 appLocation = appLocation.replace("file:/", "");
@@ -143,13 +134,8 @@ public class ImportOptions {
                 {
                     Log.log("warning",getClass().getName() + " - The " + optionsFileName + " file does not exist!");
 
-                    String appLocation = null;
-                    try {
-                        appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-                    } catch (UnsupportedEncodingException ignored) {
-                        //It cannot happen because the encoding will always be UTF-8 which is a valid encoding format.
-                        Log.log("error",getClass().getName() + " " + ignored.getMessage());
-                    }
+                    String appLocation;
+                    appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
                     //Making sure to work on Linux and Windows based systems as well
                     if(System.getProperty("os.name").startsWith("Win")) {
                         appLocation = appLocation.replace("file:/", "").replace("jar:/","");
@@ -174,7 +160,7 @@ public class ImportOptions {
                 filePath = filePath.replace("file:","");
             }
         }
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try
         {
             InputStream in = Files.newInputStream(Path.of(filePath));
@@ -182,14 +168,14 @@ public class ImportOptions {
             String line;
             while((line = reader.readLine()) != null)
             {
-                result += line;
+                result.append(line);
             }
             reader.close();
         }catch(IOException e)
         {
             Log.log("error",getClass().getName() + " When reading file! " + e.getMessage());
         }
-        return result;
+        return result.toString();
     }
 
     private void copyFile(InputStream from, String toStr){

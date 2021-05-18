@@ -21,18 +21,19 @@ import java.util.Random;
  * A class that generates buttons according to the sizes of the given objects.
  */
 public class ButtonGenerator {
-    private Dimension size;
-    private ButtonFactory buttonFactory;
-    private Integer numberOfBombs;
+    private final Dimension size;
+    private final ButtonFactory buttonFactory;
+    private final Integer numberOfBombs;
 
     private static AbstractButton[][] buttonMatrix;
-    private ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
-    private GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
+
 
     /**
      * Instantiates a {@link ButtonFactory} class and gets the given sizes for the buttons and gets to set number of bombs.
      */
     public ButtonGenerator() {
+        ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
+        GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
         buttonFactory = new ButtonFactory();
         size = buttonOptions.getSize();
         numberOfBombs = gameOptions.getDifficulty();
@@ -107,7 +108,7 @@ public class ButtonGenerator {
         return buttonMatrix;
     }
     private AbstractButton getButton(Point point, List<Point> bombList) throws UnknownButtonException {
-        Integer counter = 0;
+        int counter = 0;
         Point temp;
         for(int i=-1;i<2;i++)
         {
@@ -136,12 +137,12 @@ public class ButtonGenerator {
     private List<Point> generateBombs(Dimension range)
     {
         List<Point> result = new ArrayList<>();
-        Integer counter = 0;
+        int counter = 0;
         Point temp;
         do{
             temp = new Point(getRandomNumberInRange(range.width),getRandomNumberInRange(range.height));
             Point finalTemp = temp;
-            if(result.isEmpty() || !result.stream().anyMatch(a -> a.equals(finalTemp)));
+            if(result.isEmpty() || result.stream().noneMatch(a -> a.equals(finalTemp)))
             {
                 result.add(temp);
                 counter++;
@@ -151,7 +152,7 @@ public class ButtonGenerator {
     }
     private Integer getRandomNumberInRange(Integer range)
     {
-        Integer number;
+        int number;
         Random rand = new Random();
         do {
             number = rand.nextInt(range);

@@ -15,5 +15,5 @@ public enum State{
     /**
      * Number type tile.
      */
-    NUMBER;
+    NUMBER
 }

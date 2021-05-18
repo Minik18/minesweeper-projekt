@@ -92,7 +92,7 @@ public class RevealButton {
 
     private static void checkIfWin()
     {
-        if(revealedButtonNumber + bombNumber == buttonNumber && flagNumber == bombNumber)
+        if(revealedButtonNumber + bombNumber == buttonNumber && flagNumber.equals(bombNumber))
         {
             Log.log("info",RevealButton.class.getName() + " - Won game!");
             restartFlagNumber();

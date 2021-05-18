@@ -1,12 +1,12 @@
 package Score;
 
 import Logging.Log;
-import Option.GeneralOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -16,9 +16,8 @@ import java.util.*;
  */
 public class ImportScore {
 
-    private static ImportScore instance = new ImportScore();
-    private JSONObject jsonObject;
-    private List<Score> list = new ArrayList<>();
+    private static final ImportScore instance = new ImportScore();
+    private final List<Score> list = new ArrayList<>();
     private static final String highscoreFileName = "highscore.json";
 
     private ImportScore(){}
@@ -40,6 +39,7 @@ public class ImportScore {
      */
     public List<Score> getScores()
     {
+        JSONObject jsonObject;
         list.clear();
         jsonObject = new JSONObject(getString());
         if(jsonObject.getJSONArray("scores").length() == 0)
@@ -58,7 +58,7 @@ public class ImportScore {
                 list.add(score);
             }
         }
-        Collections.sort(list,Collections.reverseOrder());
+        list.sort(Collections.reverseOrder());
         Integer index = 1;
         for (Score score : list) {
             score.setPlace(index);
@@ -69,32 +69,22 @@ public class ImportScore {
     }
     private String getString()
      {
-        String result = """
+        StringBuilder result = new StringBuilder("""
                 {
                 "scores" :
                     [
                         
                     ]
                 }
-                """;
+                """);
 
-        String filePath = null;
-        try {
-            filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(highscoreFileName)),"UTF-8");
-        } catch (UnsupportedEncodingException ignored) {
-            //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-            Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
-        }
-         if(filePath == "null")  //Run by IDE and the file does not exist
+        String filePath;
+         filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(highscoreFileName)), StandardCharsets.UTF_8);
+         if(filePath.equals("null"))  //Run by IDE and the file does not exist
          {
              Log.log("warning",getClass().getName() + " - The " + highscoreFileName + " file does not exist!");
-             String appLocation = null;
-             try {
-                 appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-             } catch (UnsupportedEncodingException ignored) {
-                 //Ignored because the encoding will always be UTF_8 which is a valid encoding format
-                 Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
-             }
+             String appLocation;
+             appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
              //Making sure to work on Linux and Windows based systems as well
              if(System.getProperty("os.name").startsWith("Win")) {
                  appLocation = appLocation.replace("file:/", "").replace("jar:/","");
@@ -103,7 +93,7 @@ public class ImportScore {
                  appLocation = appLocation.replace("file:", "").replace("jar:/","");
              }
              filePath = appLocation + highscoreFileName;
-             createFile(filePath,result);
+             createFile(filePath, result.toString());
          }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
          {
              //Making sure to work on both Linus and Windows base systems
@@ -123,12 +113,8 @@ public class ImportScore {
              if(!file.exists()) //Run by jar and the file does not exist
              {
                  Log.log("warning",getClass().getName() + " - The " + highscoreFileName + " file does not exist!");
-                 String appLocation = null;
-                 try {
-                     appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()),"UTF-8");
-                 } catch (UnsupportedEncodingException ignored) {
-                     Log.log("error", getClass().getName() + " - Error when opening file. " + ignored.getMessage());
-                 }
+                 String appLocation ;
+                 appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
                  //Making sure to work on Linux and Windows based systems as well
                  if(System.getProperty("os.name").startsWith("Win")) {
                      appLocation = appLocation.replace("file:/", "").replace("jar:/","");
@@ -139,7 +125,7 @@ public class ImportScore {
                  appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                  appLocation += "/";
                  filePath = appLocation + highscoreFileName;
-                 createFile(filePath,result);
+                 createFile(filePath, result.toString());
              }else { //Run by jar and the file exist
                  Log.log("info",getClass().getName() + " - The " + highscoreFileName + " file does exist!");
              }
@@ -156,11 +142,11 @@ public class ImportScore {
          {
              InputStream in = Files.newInputStream(Path.of(filePath));
              BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-             result = "";
+             result = new StringBuilder();
              String line;
              while((line = reader.readLine()) != null)
              {
-                 result += line;
+                 result.append(line);
              }
              reader.close();
 
@@ -168,7 +154,7 @@ public class ImportScore {
          {
              Log.log("error",getClass().getName() + " - Error when reading file! " + e.getMessage());
          }
-        return result;
+        return result.toString();
     }
 
     private void createFile(String path, String str)

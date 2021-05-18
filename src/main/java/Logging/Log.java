@@ -21,14 +21,13 @@ public class Log {
      */
     public static void log(String level,String text)
     {
-       switch (level)
-       {
-           case "info" : LOGGER.log(Level.INFO,INFO_MARKER,text); break;
-           case "error" : LOGGER.log(Level.ERROR,ERROR_MARKER,text); break;
-           case "debug" : LOGGER.log(Level.DEBUG,DEBUG_MARKER,text); break;
-           case "warning" : LOGGER.log(Level.WARN,WARNING_MARKER,text); break;
-           default: LOGGER.log(Level.INFO,INFO_MARKER,"--Default Case Log-- " + text);
-       }
+        switch (level) {
+            case "info" -> LOGGER.log(Level.INFO, INFO_MARKER, text);
+            case "error" -> LOGGER.log(Level.ERROR, ERROR_MARKER, text);
+            case "debug" -> LOGGER.log(Level.DEBUG, DEBUG_MARKER, text);
+            case "warning" -> LOGGER.log(Level.WARN, WARNING_MARKER, text);
+            default -> LOGGER.log(Level.INFO, INFO_MARKER, "--Default Case Log-- " + text);
+        }
     }
 
 }
