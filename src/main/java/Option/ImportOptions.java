@@ -22,7 +22,6 @@ import java.util.*;
 public class ImportOptions {
 
     private final String defaultOptionsFileName = "defaultOptions.json";
-    private final String optionsFileName = "options.json";
     private static final ImportOptions instance = new ImportOptions();
 
     private ImportOptions() {}
@@ -40,12 +39,13 @@ public class ImportOptions {
      * Import values from the options file. If that not exists, then creates it copies the content in the defaultOptions
      * file to the newly created options file and import the values. This method makes difference between weather the application
      * is run by IDE or by a JAR file. The imported values will be sorted into the appropriate objects.
+     * @param fileName The name of the imported file.
      * @return A map with a key as the type of the option and a value attached to it as appropriate {@link Option} object.
      */
-    public Map<String,Option> importOptions() {
+    public Map<String,Option> importOptions(String fileName) {
         String json = "";
         try {
-             json = getStringFromFile();
+             json = getStringFromFile(fileName);
         }catch(Exception e)
         {
             e.printStackTrace();
@@ -95,15 +95,15 @@ public class ImportOptions {
         return map;
     }
 
-    private String getStringFromFile() {
+    private String getStringFromFile(String fileName) {
 
         String filePath;
-        filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(optionsFileName)), StandardCharsets.UTF_8);
+        filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(fileName)), StandardCharsets.UTF_8);
 
         if(filePath.equals("null"))  //Run by IDE and the file does not exist
         {
              Log.log("info",getClass().getName() + " - Run by IDE!");
-             Log.log("warning",getClass().getName() + " - The " + optionsFileName + " file does not exist!");
+             Log.log("warning",getClass().getName() + " - The " + fileName + " file does not exist!");
 
             String appLocation;
             appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
@@ -114,8 +114,8 @@ public class ImportOptions {
             {
                 appLocation = appLocation.replace("file:", "");
             }
-             copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
-             filePath = appLocation + optionsFileName;
+             copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + fileName, fileName);
+             filePath = appLocation + fileName;
         }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
             {
                 Log.log("info",getClass().getName() + " - Run by JAR!");
@@ -128,11 +128,11 @@ public class ImportOptions {
                 filePath = filePath.substring(0,filePath.lastIndexOf("/"));
                 filePath = filePath.substring(0,filePath.lastIndexOf("/"));
                 filePath += "/";
-                filePath += optionsFileName;
+                filePath += fileName;
                 File file = new File(filePath);
                 if(!file.exists()) //Run by jar and the file does not exist
                 {
-                    Log.log("warning",getClass().getName() + " - The " + optionsFileName + " file does not exist!");
+                    Log.log("warning",getClass().getName() + " - The " + fileName + " file does not exist!");
 
                     String appLocation;
                     appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
@@ -145,14 +145,14 @@ public class ImportOptions {
                     }
                     appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                     appLocation += "/";
-                    copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + optionsFileName);
-                    filePath = appLocation + optionsFileName;
+                    copyFile(getClass().getClassLoader().getResourceAsStream(defaultOptionsFileName), appLocation + fileName,fileName);
+                    filePath = appLocation + fileName;
                 }else { //Run by jar and the file exist
-                    Log.log("info",getClass().getName() + " - The " + optionsFileName + " file does exist!");
+                    Log.log("info",getClass().getName() + " - The " + fileName + " file does exist!");
                 }
             }else { //Run by IDE and the file does exist
             Log.log("info",getClass().getName() + " - Run by IDE!");
-            Log.log("info",getClass().getName() + " - The " + optionsFileName + " file does exist!");
+            Log.log("info",getClass().getName() + " - The " + fileName + " file does exist!");
             if(System.getProperty("os.name").startsWith("Win")) {
                 filePath = filePath.replace("file:/","");
             }else
@@ -178,17 +178,17 @@ public class ImportOptions {
         return result.toString();
     }
 
-    private void copyFile(InputStream from, String toStr){
-        Log.log("debug",getClass().getName() + " - Creating " + optionsFileName + " file!");
+    private void copyFile(InputStream from, String toStr, String fileName){
+        Log.log("debug",getClass().getName() + " - Creating " + fileName + " file!");
         try {
             FileOutputStream out = new FileOutputStream(toStr);
             out.write(from.readAllBytes());
             out.flush();
             out.close();
-            Log.log("debug",getClass().getName() + " - Successfully created " + optionsFileName + " file!");
+            Log.log("debug",getClass().getName() + " - Successfully created " + fileName + " file!");
         }
         catch(Exception e) {
-            Log.log("error",getClass().getName() + " - Error creating " + optionsFileName + " file! Cause: " + e.getMessage());
+            Log.log("error",getClass().getName() + " - Error creating " + fileName + " file! Cause: " + e.getMessage());
         }
 
     }

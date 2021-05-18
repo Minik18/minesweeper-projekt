@@ -40,6 +40,7 @@ public class GameWindow extends AbstractWindow {
         loader.setLocation(getClass().getClassLoader().getResource(pathToMainStage));
         Parent root = loader.load();
         controller = loader.getController();
+        controller.setImportOptionsValue();
         stage.setScene(new Scene(root));
 
         windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");

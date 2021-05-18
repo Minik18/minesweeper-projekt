@@ -19,9 +19,9 @@ import java.awt.*;
 public class WindowConfigure {
 
     private static final WindowConfigure instance = new WindowConfigure();
-    private final WindowOptions windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");
-    private final GameOptions gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
-    private final ButtonOptions buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
+    private WindowOptions windowOptions;
+    private GameOptions gameOptions;
+    private ButtonOptions buttonOptions;
 
     private WindowConfigure() {
     }
@@ -40,6 +40,10 @@ public class WindowConfigure {
      * @param controller A class containing fxml elements of the main scene.
      */
     public void configureGameWindow(Controller controller) {
+        windowOptions = (WindowOptions) GeneralOptions.getInstance().getOptions().get("WindowOptions");
+        gameOptions = (GameOptions) GeneralOptions.getInstance().getOptions().get("GameOptions");
+        buttonOptions = (ButtonOptions) GeneralOptions.getInstance().getOptions().get("ButtonOptions");
+
         Dimension size = windowOptions.getGamePanelSize();
         controller.gamePane.setPrefSize(size.width ,size.height );
         controller.gamePane.setDisable(true);

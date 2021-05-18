@@ -1,7 +1,9 @@
 package Control;
 
 import Logging.Log;
+import Option.GeneralOptions;
 import Option.UpdateFile;
+import Score.ImportScore;
 import Window.HighscoreWindow;
 import Window.WindowConfigure;
 import javafx.fxml.FXML;
@@ -19,78 +21,80 @@ public class Controller {
     private final Timer timer = Timer.getInstance();
     private final UpdateFile updateFile = UpdateFile.getInstance();
     private final HighscoreWindow highscoreWindow = HighscoreWindow.getInstance();
+    private final String optionsFileName = "options.json";
+    private final String highscoreFileName = "highscore.json";
     /**
-     * An FXML pane element
+     * An FXML pane element.
      */
     @FXML
     public Pane gamePane;
     /**
-     * An FXML label element
+     * An FXML label element.
      */
     @FXML
     public Label nickName;
     /**
-     * An FXML label element
+     * An FXML label element.
      */
     @FXML
     public Label bombNumber;
     /**
-     * An FXML pane element
+     * An FXML pane element.
      */
     @FXML
     public Pane menuPane;
     /**
-     * An FXML pane element
+     * An FXML pane element.
      */
     @FXML
     public Pane infoPane;
     /**
-     * An FXML button element
+     * An FXML button element.
      */
     @FXML
     public Button start;
     /**
-     * An FXML button element
+     * An FXML button element.
      */
     @FXML
     public Button stop;
     /**
-     * An FXML button element
+     * An FXML button element.
      */
     @FXML
     public Button highscore;
     /**
-     * An FXML button element
+     * An FXML button element.
      */
     @FXML
     public Button changeNickname;
     /**
-     * An FXML button element
+     * An FXML button element.
      */
     @FXML
     public Button exit;
     /**
-     * An FXML button element
+     * An FXML button element.
      */
     @FXML
     public Button changeDifficulty;
     /**
-     * An FXML text field element
+     * An FXML text field element.
      */
     @FXML
     public TextField nickInput;
     /**
-     * An FXML text fieldelement
+     * An FXML text field element.
      */
     @FXML
     public TextField numberInput;
     /**
-     * An FXML pane element
+     * An FXML pane element.
      */
     @FXML
     public Pane consolePane;
     /**
-     * An FXML labelelement
+     * An FXML label element.
      */
     @FXML
     public Label console;
@@ -170,7 +174,7 @@ public class Controller {
      */
     public void updateNickname(String name)
     {
-        updateFile.updateNickname(name);
+        updateFile.updateNickname(name,optionsFileName);
     }
     /**
      * Updates the difficulty in the options file.
@@ -178,7 +182,7 @@ public class Controller {
      */
     public void updateDifficulty(Integer number)
     {
-        updateFile.updateDifficulty(number);
+        updateFile.updateDifficulty(number,optionsFileName);
     }
 
     /**
@@ -187,6 +191,7 @@ public class Controller {
     public void setHighscoreScene()
     {
         Log.log("info",getClass().getName() + " - Load scoreboard!");
+        setScoreboardValue();
         highscoreWindow.setScene(stage,stage.getScene());
         highscoreWindow.setup();
         stage.setScene(highscoreWindow.getScene());
@@ -200,7 +205,19 @@ public class Controller {
     {
         endTimer();
         Long time = timer.getDeltaTime() / 1000;
-        updateFile.updateHighScore(nickName.getText(),time,bombNumber);
+        updateFile.updateHighScore(nickName.getText(),time,bombNumber,highscoreFileName);
         restartState();
+    }
+
+    /**
+     * Calls a method to import the options file.
+     */
+    public void setImportOptionsValue()
+    {
+        GeneralOptions.getInstance().setOptions(optionsFileName);
+    }
+    private void setScoreboardValue()
+    {
+        ImportScore.getInstance().importScores(highscoreFileName);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class GeneralOptions {
 
-    private final Map<String,Option> options = ImportOptions.getInstance().importOptions();
+    private  Map<String,Option> options ;
     private static final GeneralOptions instance = new GeneralOptions();
 
     private GeneralOptions(){}
@@ -31,6 +31,15 @@ public class GeneralOptions {
     public Map<String,Option> getOptions()
     {
         return options;
+    }
+
+    /**
+     * Calls a method to import the options and loads its values into the local {@link GeneralOptions#options} map.
+     * @param fileName The name of the imported file.
+     */
+    public void setOptions(String fileName)
+    {
+        options = ImportOptions.getInstance().importOptions(fileName);
     }
 
 }

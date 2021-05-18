@@ -17,7 +17,7 @@ import java.util.*;
 public class ImportScore {
 
     private static final ImportScore instance = new ImportScore();
-    private final List<Score> list = new ArrayList<>();
+    private List<Score> list = new ArrayList<>();
     private static final String highscoreFileName = "highscore.json";
 
     private ImportScore(){}
@@ -32,19 +32,28 @@ public class ImportScore {
     }
 
     /**
-     * This method imports the values from the highscore file. If the file does not exist, it creates it end sets an
-     * empty json array object to it. Then processes the values and add them together into a {@link List}. This method
-     * makes difference between whether the application is run by an IDE or a JAR file.
-     * @return A list, containing {@link Score} objects.
+     * Gets the imported score values.
+     * @return A {@link List} containing {@link Score} objects.
      */
     public List<Score> getScores()
     {
+        return list;
+    }
+
+    /**
+     * This method imports the values from the a file. If the file does not exist, it creates it end sets an
+     * empty json array object to it. Then processes the values and add them together into a {@link List}. This method
+     * makes difference between whether the application is run by an IDE or a JAR file.
+     * @param fileName The name of the file.
+     */
+    public void importScores(String fileName)
+    {
         JSONObject jsonObject;
         list.clear();
-        jsonObject = new JSONObject(getString());
+        jsonObject = new JSONObject(getString(fileName));
         if(jsonObject.getJSONArray("scores").length() == 0)
         {
-            return new ArrayList<>();
+            list = new ArrayList<>();
         }else
         {
             JSONArray jsonArray = jsonObject.getJSONArray("scores");
@@ -65,9 +74,8 @@ public class ImportScore {
             index++;
         }
         Log.log("info", getClass().getName() + " - Successfully imported scores.");
-        return list;
     }
-    private String getString()
+    private String getString(String fileName)
      {
         StringBuilder result = new StringBuilder("""
                 {
@@ -79,10 +87,10 @@ public class ImportScore {
                 """);
 
         String filePath;
-         filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(highscoreFileName)), StandardCharsets.UTF_8);
+         filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(fileName)), StandardCharsets.UTF_8);
          if(filePath.equals("null"))  //Run by IDE and the file does not exist
          {
-             Log.log("warning",getClass().getName() + " - The " + highscoreFileName + " file does not exist!");
+             Log.log("warning",getClass().getName() + " - The " + fileName + " file does not exist!");
              String appLocation;
              appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
              //Making sure to work on Linux and Windows based systems as well
@@ -92,7 +100,7 @@ public class ImportScore {
              {
                  appLocation = appLocation.replace("file:", "").replace("jar:/","");
              }
-             filePath = appLocation + highscoreFileName;
+             filePath = appLocation + fileName;
              createFile(filePath, result.toString());
          }else if (filePath.startsWith("jar")) //Run by jar and the file may exist
          {
@@ -107,12 +115,12 @@ public class ImportScore {
              filePath = filePath.substring(0,filePath.lastIndexOf("/"));
              filePath = filePath.substring(0,filePath.lastIndexOf("/"));
              filePath += "/";
-             filePath += highscoreFileName;
+             filePath += fileName;
              System.out.println(filePath);
              File file = new File(filePath);
              if(!file.exists()) //Run by jar and the file does not exist
              {
-                 Log.log("warning",getClass().getName() + " - The " + highscoreFileName + " file does not exist!");
+                 Log.log("warning",getClass().getName() + " - The " + fileName + " file does not exist!");
                  String appLocation ;
                  appLocation = URLDecoder.decode(String.valueOf(getClass().getProtectionDomain().getCodeSource().getLocation()), StandardCharsets.UTF_8);
                  //Making sure to work on Linux and Windows based systems as well
@@ -124,13 +132,13 @@ public class ImportScore {
                  }
                  appLocation = appLocation.substring(0,appLocation.lastIndexOf("/"));
                  appLocation += "/";
-                 filePath = appLocation + highscoreFileName;
+                 filePath = appLocation + fileName;
                  createFile(filePath, result.toString());
              }else { //Run by jar and the file exist
-                 Log.log("info",getClass().getName() + " - The " + highscoreFileName + " file does exist!");
+                 Log.log("info",getClass().getName() + " - The " + fileName + " file does exist!");
              }
          }else { //Run by IDE and the file does exist
-             Log.log("info",getClass().getName() + " - The " + highscoreFileName + " file does exist!");
+             Log.log("info",getClass().getName() + " - The " + fileName + " file does exist!");
              if(System.getProperty("os.name").startsWith("Win")) {
                  filePath = filePath.replace("file:/", "").replace("jar:/","");
              }else

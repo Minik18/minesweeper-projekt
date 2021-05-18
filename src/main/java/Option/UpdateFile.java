@@ -2,7 +2,6 @@ package Option;
 
 import Logging.Log;
 import Score.Score;
-import Score.ImportScore;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,8 +17,6 @@ import java.nio.file.Path;
  */
 public class UpdateFile {
     private static final UpdateFile instance = new UpdateFile();
-    private final String optionsFileName = "options.json";
-    private final String scoreFileName = "highscore.json";
     private JSONObject jsonObject;
 
     private UpdateFile() {
@@ -37,8 +34,9 @@ public class UpdateFile {
      * Updates the nickname element in the options json file. This method makes a difference between whether the application
      * is run by an IDE or from a JAR file. If the file could not be updated, the reason will be logged.
      * @param name A new name for a player.
+     * @param optionsFileName The file name to be updated.
      */
-    public void updateNickname(String name) {
+    public void updateNickname(String name,String optionsFileName) {
         jsonObject = new JSONObject(getString(optionsFileName));
 
         String oldName = jsonObject.getJSONObject("options").getJSONObject("gameOptions").getString("nickName");
@@ -75,15 +73,14 @@ public class UpdateFile {
      * @param name The name of the player.
      * @param time The time between the start and the end of the game.
      * @param bombNumber The number of bombs in the current game.
+     * @param scoreFileName The file name to be updated.
      */
-    public void updateHighScore(String name, Long time, Integer bombNumber) {
+    public void updateHighScore(String name, Long time, Integer bombNumber,String scoreFileName) {
         Score scoreObj = new Score();
         scoreObj.setScore( (double) ( (bombNumber / time) * bombNumber));
         scoreObj.setName(name);
         scoreObj.setTime(time);
         scoreObj.setBombNumber(bombNumber);
-
-        ImportScore.getInstance().getScores(); //Make sure that the highscore.json file exists
 
         String oldScores = getString(scoreFileName);
 
@@ -117,8 +114,9 @@ public class UpdateFile {
      * Updates the difficulty element in the options json file. This method makes a difference between whether the application
      * is run by an IDE or from a JAR file. If the file could not be updated, the reason will be logged.
      * @param newNumber A new number of bombs.
+     * @param optionsFileName The file name to be updated.
      */
-    public void updateDifficulty(Integer newNumber) {
+    public void updateDifficulty(Integer newNumber,String optionsFileName) {
         jsonObject = new JSONObject(getString(optionsFileName));
 
         Integer oldNumber = jsonObject.getJSONObject("options").getJSONObject("gameOptions").getInt("difficulty");
@@ -148,7 +146,7 @@ public class UpdateFile {
     }
 
     private String getString(String path) {
-        String filePath = null;
+        String filePath;
         String result = "";
         filePath = URLDecoder.decode(String.valueOf(getClass().getClassLoader().getResource(path)), StandardCharsets.UTF_8);
         if (filePath.startsWith("jar")) // Run by JAR

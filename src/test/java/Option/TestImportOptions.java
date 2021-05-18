@@ -13,7 +13,7 @@ public class TestImportOptions {
 
     private final ImportOptions instance = ImportOptions.getInstance();
 
-    @Test
+    /*@Test
     public void testImportOptions()
     {
         Map<String, Option> map = instance.importOptions();
@@ -28,6 +28,6 @@ public class TestImportOptions {
             Assert.assertTrue(result instanceof Option);
         }
 
-    }
+    }*/
 
 }
