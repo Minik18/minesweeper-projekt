@@ -11,12 +11,14 @@ import java.util.*;
 @RunWith(JfxRunner.class)
 public class TestImportOptions {
 
-    private final ImportOptions instance = ImportOptions.getInstance();
+    private final GeneralOptions generalOptionsInstance = GeneralOptions.getInstance();
+    private final String fileName = "testOptions.json";
 
-    /*@Test
+    @Test
     public void testImportOptions()
     {
-        Map<String, Option> map = instance.importOptions();
+        generalOptionsInstance.setOptions(fileName);
+        Map<String, Option> map = generalOptionsInstance.getOptions();
 
         Set<String> expectedKeys = Set.of("GameOptions","ButtonOptions","WindowOptions");
 
@@ -28,6 +30,6 @@ public class TestImportOptions {
             Assert.assertTrue(result instanceof Option);
         }
 
-    }*/
+    }
 
 }

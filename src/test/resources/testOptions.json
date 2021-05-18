@@ -1,0 +1,35 @@
+{
+  "options": {
+    "windowOptions": {
+      "title" : "Minesweeper Game",
+      "gamePanelSize" : {
+        "width" : 330,
+        "height" : 510
+      },
+      "infoPanelSize" : {
+        "width" : 250,
+        "height" : 180
+      },
+      "menuPanelSize" : {
+        "width" : 250,
+        "height" : 330
+      },
+      "consolePanelSize" : {
+        "width" : 250,
+        "height" : 90
+      },
+      "resizeable" : false,
+      "iconLocation" : "Images/icon.png"
+    },
+    "buttonOptions": {
+      "size": {
+        "width" : 30,
+        "height" : 30
+      }
+    },
+    "gameOptions": {
+      "nickName" : "default",
+      "difficulty" : 40
+    }
+  }
+}
